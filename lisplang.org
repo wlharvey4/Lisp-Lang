@@ -2,17 +2,151 @@
 
 #+TITLE: On the Lisp Language
 #+AUTHOR: WLHarvey4
-#+DATE: 2019-01-26 Sat 09:48
-#+MACRO: VERSION Version 0.0.1
+#+DATE: 2019-01-26 Sat 16:13
+#+MACRO: VERSION Version 0.0.2
 
-* General Resources
 
-  - [[https://common-lisp.net/][Common-Lisp dot Net]]
+* Common Lisp
+
+  #+ATTR_HTML: :width 25%
+  [[./img/lisp-logo.png]]
+
+** General Resources
+
+   - [[https://common-lisp.net/][Common-Lisp dot Net]]
+   - [[https://www.cliki.net/][CLiki]] --- The Common Lisp Wiki
+   - [[https://lisp-lang.org/][Lisp-Lang dot Org]] --- Common Lisp on the Web
+
+     Welcome to =lisp-lang.org=, the new home of Common Lisp on the
+     web.  Previously, if someone wanted to learn Common Lisp, the
+     language, their best bet was Peter Seibel’s [[http://www.gigamonkeys.com/book/][Practical Common
+     Lisp]]. But the book, written in 2005, doesn’t cover setting up a
+     modern Common Lisp environment: tools like [[https://www.quicklisp.org/beta/][Quicklisp]] and
+     [[http://quickdocs.org/][Quickdocs]] are more recent inventions.
+
+   - [[http://www.cs.cmu.edu/Groups/AI/html/cltl/cltl2.html][Common Lisp the Language (2nd Ed)]] by Guy L. Steele
+   - [[http://www-formal.stanford.edu/jmc/][John McCarthy's Home Page]]
+   - [[http://www.paulgraham.com/index.html][Paul Graham's Home Page]]
+   - [[http://www.lispworks.com/documentation/common-lisp.html][ANSI Common Lisp Standard]]
+
+     The Common Lisp HyperSpec™ is the acclaimed online version of the
+     ANSI Common Lisp Standard.  The HyperSpec is derived from the
+     official standard [fn:official-standard] with permission from
+     ANSI and NCITS (previously known as X3). It contains the full
+     text of the ANSI standard and ancillary information.
+
+     #+ATTR_HTML: :textarea t :width 60
+     #+BEGIN_EXAMPLE
+     INCITS 226-1994[S2008]
+     Promotes the portability of Common Lisp programs among a variety
+     of data processing systems. It is a language specification aimed
+     at an audience of implementors and knowledgeable programmers. It
+     is neither a tutorial nor an implementation guide.
+     #+END_EXAMPLE
+
+[fn:official-standard] The document ANSI INCITS 226-1994 (formerly
+ANSI X3.226:1994) American National Standard for Programming Language
+Common LISP is the official standard, available on paper [[http://www.techstreet.com/cgi-bin/detail?product_id=56214][here]]. Here is
+a [[http://webstore.ansi.org/RecordDetail.aspx?sku=INCITS+226-1994%255bS2008%255d][PDF version]].
+
+** Common Lisp Implementations
+
+*** Armed Bear Common Lisp
+
+    [[https://common-lisp.net/project/armedbear/][Armed Bear Common Lisp (ABCL)]]
+
+    ABCL is a full implementation of the Common Lisp language
+    featuring both an interpreter and a compiler, running in the
+    JVM. Originally started to be a scripting language for the J
+    editor, it now supports JSR-223 (Java scripting API): it can be a
+    scripting engine in any Java application. Additionally, it can be
+    used to implement (parts of) the application using Java to Lisp
+    integration APIs.
+
+**** FAQ
+
+     [[https://common-lisp.net/project/armedbear/faq.shtml][Frequently Asked Questions]]
+
+*** Steel Bank Common Lisp
+
+    [[https://common-lisp.net/project/armedbear/][Steel Bank Common Lisp (SBCL)]]
+
+    SBCL is a high performance Common Lisp compiler. It is open source
+    free software, with a permissive license. In addition to the
+    compiler and runtime system for ANSI Common Lisp, it provides an
+    interactive environment including a debugger, a statistical
+    profiler, a code coverage tool, and many other extensions. SBCL
+    runs on a number of POSIX platforms, and experimentally on
+    Windows.
+
+*** Clozure Common Lisp
+
+    [[https://ccl.clozure.com/][Clozure Common Lisp (CCL)]]
+
+    CCL s a free Common Lisp implementation with a long history. Some
+    distinguishing features of the implementation include fast
+    compilation speed, native threads, a precise, generational,
+    compacting garbage collector, and a convenient foreign-function
+    interface.
+
+*** Embeddable Common Lisp
+
+    [[https://common-lisp.net/project/ecl/main.html][Embeddable Common Lisp (ECL)]]
+
+    ECL is an interpreter of the Common-Lisp language as described in
+    the X3J13 Ansi specification, featuring CLOS (Common-Lisp Object
+    System), conditions, loops, etc, plus a translator to C, which can
+    produce standalone executables.
+
+    ECL supports the operating systems Linux, FreeBSD, NetBSD,
+    OpenBSD, OS X, Solaris and Windows, running on top of the Intel,
+    Sparc, Alpha, PowerPC and ARM processors.
+
+*** Clasp
+
+    [[https://github.com/clasp-developers/clasp][Clasp]]
+
+    Clasp is a new Common Lisp implementation that seamlessly
+    interoperates with C++ libraries and programs using LLVM for
+    compilation to native code. This allows Clasp to take advantage of
+    a vast array of preexisting libraries and programs, such as out of
+    the scientific computing ecosystem. Embedding them in a Common
+    Lisp environment allows you to make use of rapid prototyping,
+    incremental development, and other capabilities that make it a
+    powerful language.
+
+*** CLISP
+
+    [[https://clisp.sourceforge.io/][CLISP]]
+
+    GNU CLISP is a Common Lisp implementation by Bruno Haible, then of
+    Karlsruhe University, and Michael Stoll, then of Munich
+    University, both in Germany. It implements the language described
+    in the ANSI Common Lisp standard with many extensions.
+
+** Writings on Lisp
+
+   - [[http://www-formal.stanford.edu/jmc/recursive.html][Recursive Functions of Symbolic Expressions and Their Computation
+     by Machine, Part I]]
+     - John McCarthy, Massachusetts Institute of Technology,
+       Cambridge, Mass., April 1960
+   - [[http://www-formal.stanford.edu/jmc/lisp20th.html][Lisp---Notes on its Past and Future]]
+     - John McCarthy, 1980
+   - [[http://www.paulgraham.com/onlisp.html][On Lisp]]
+     - Paul Graham, 1993
+
+** Derived Works of Lisp
+
+*** Scheme
+
+    - [[https://www.scheme.com/tspl4/][The Scheme Programming Language]] (2009 4th Edition) by R. Kent Dybvig
+    - [[https://racket-lang.org/][The Racket Programming Language]]
+    - [[https://clojure.org/][The Clojure Programming Language]]
 
 * HTML EXPORT SETUP                                                :noexport:
 #+OPTIONS: html-link-use-abs-url:nil html-postamble:auto
 #+OPTIONS: html-preamble:t html-scripts:t html-style:t
-#+OPTIONS: html5-fancy:nil tex:t
+#+OPTIONS: html5-fancy:t tex:t H:5
 #+HTML_DOCTYPE: xhtml-strict
 #+HTML_CONTAINER: div
 #+DESCRIPTION:
