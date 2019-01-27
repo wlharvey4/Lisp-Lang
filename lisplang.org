@@ -2,14 +2,13 @@
 
 #+TITLE: On the Lisp Language
 #+AUTHOR: WLHarvey4
-#+DATE: 2019-01-27 Sun 09:59
-#+MACRO: VERSION Version 0.0.3
+#+DATE: 2019-01-27 Sun 15:47
+#+MACRO: VERSION Version 0.0.4
 
+#+ATTR_HTML: :width 25%
+[[./img/lisp-logo.png]]
 
 * Common Lisp
-
-  #+ATTR_HTML: :width 25%
-  [[./img/lisp-logo.png]]
 
 ** General Resources
 
@@ -69,7 +68,7 @@ a [[http://webstore.ansi.org/RecordDetail.aspx?sku=INCITS+226-1994%255bS2008%255
 
 *** Steel Bank Common Lisp
 
-    [[https://common-lisp.net/project/armedbear/][Steel Bank Common Lisp (SBCL)]]
+    [[https://common-lisp.net/project/armedbear/][Steel Bank Common Lisp (SBCL)]] \diamond [[http://www.sbcl.org/manual/index.html][Online Manual]]
 
     SBCL is a high performance Common Lisp compiler. It is open source
     free software, with a permissive license. In addition to the
@@ -138,7 +137,37 @@ a [[http://webstore.ansi.org/RecordDetail.aspx?sku=INCITS+226-1994%255bS2008%255
    - [[http://www-formal.stanford.edu/jmc/lisp20th.html][Lisp---Notes on its Past and Future]]
      - John McCarthy, 1980
    - [[http://www.paulgraham.com/onlisp.html][On Lisp]]
-     - Paul Graham, 1993
+     - Paul Graham, 1993--- An in-depth treatment of macros, but not recommended
+       as a first Common Lisp book, since it is slightly pre-ANSI so you need
+       to be on your guard against non-standard usages, and since it doesn’t
+       really even try to cover the language as a whole, focusing solely on
+       macros.
+   - [[http://www.gigamonkeys.com/book/][Practical Common Lisp]]
+     - Peter Seibel---
+       An excellent introduction to the language, covering both the basics and
+       “advanced topics” like macros, CLOS, and packages. Available both in
+       print format and on the web.
+       - Source Files :: [[./PracticalCL/practicals-1.0.3/]]
+   - Object-Oriented Programming In Common Lisp
+     - Sonya Keene, 1989--- With the exception of Practical Common Lisp most
+       introductory books don’t emphasize CLOS. This one does. Even if you’re
+       very knowledgeable about object oriented programming in the abstract,
+       it’s worth looking at this book if you want to do any OO in Common
+       Lisp. Some abstractions in CLOS (especially multiple dispatch) go
+       beyond anything you’ll see in most OO systems, and there are a number
+       of lesser differences as well. This book tends to help with the culture
+       shock.
+   - Art Of Metaobject Programming
+     - Gregor Kiczales et al.
+   - [[https://github.com/norvig/paip-lisp][Paradigms Of Artificial Intelligence Programming]]
+     - Peter Norvig, 1992--- Good information on general Common Lisp
+       programming, and many nontrivial examples. Whether or not your work is
+       AI, it’s a very good book to look at.  This is an open-source repository
+       for the book /Paradigms of Artificial Intelligence Programming: Case
+       Studies in Common Lisp/ by Peter Norvig (1992), and the code contained
+       therein. The copyright has reverted to the author, who has shared it
+       here under MIT license.
+
 
 ** Derived Works of Lisp
 
