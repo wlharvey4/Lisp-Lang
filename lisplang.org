@@ -2,13 +2,75 @@
 
 #+TITLE: On the Lisp Language
 #+AUTHOR: WLHarvey4
-#+DATE: 2019-01-27 Sun 15:47
-#+MACRO: VERSION Version 0.0.4
+#+DATE: 2019-01-28 Mon 12:09
+#+MACRO: VERSION Version 0.0.5
 
 #+ATTR_HTML: :width 25%
 [[./img/lisp-logo.png]]
 
 * Common Lisp
+
+** What Common Lisp Is
+
+*** Interactive Development
+
+    Development in Common Lisp is interactive. There's no separate
+    compile/run/debug cycle. Instead of that, the program is developed while it
+    runs. Compilation is incremental, and functions can be created and updated
+    on the fly. As the program is running, all objects are available and can be
+    inspected all the time. This is much more than a simple REPL; the whole
+    environment, from the IDE to the language is prepared for this type of
+    development.
+
+*** Robust
+
+    Common Lisp is a carefully designed language with a long history. It was
+    standarized in 1980 and the language has not changed since but it keeps up
+    with the times thanks to its modability and metaprogramming
+    capabilities. This makes it very likely that your program will continue to
+    run unmodified for several years.
+
+*** Expressive
+
+    Being a meta language, Lisp approach to problem solving is to define idioms
+    (small Domain Specific Languages) as close to the problem domain as
+    possible. This results in very succint and declarative solutions, at a
+    level which is difficult to achieve in other programming languages. CL
+    flexibility also facilitates a bottom-up programming approach.
+
+*** Fast
+
+    Most Common Lisp compilers produce fast code. Programs can be type
+    annotated and the compilers can apply optimizations based on them. CL also
+    supports different levels of debugging, safety and speed. Performance is
+    usually better than interpreted languages like Python and Ruby, and close
+    to C in some cases.
+
+*** Uniform
+
+    Uniformity is present in both syntax and data structures. Everything being
+    an S-expression, there are not many syntax oddities to think about. And
+    Lisp main data structure is the list.
+
+*** Multiparadigm
+
+    Lisp implements and can adapt to several programming paradigms. It supports
+    first class functions, closures and destructuring (among other things),
+    commonly present in functional languages. And comes with CLOS, one of the
+    most powerful object systems in existence. Support for other paradigms can
+    often be implemented as a library as has been done for the logic paradigm.
+
+*** Innovative and Advanced
+
+    - Method combinations
+    - Multiple dispatch
+    - Multiple-values
+    - Meta Object protocol.
+
+
+** Features of Common Lisp
+
+   [[http://random-state.net/features-of-common-lisp.html][Features of Common Lisp]] by Abhishek Reddy
 
 ** General Resources
 
@@ -68,7 +130,7 @@ a [[http://webstore.ansi.org/RecordDetail.aspx?sku=INCITS+226-1994%255bS2008%255
 
 *** Steel Bank Common Lisp
 
-    [[https://common-lisp.net/project/armedbear/][Steel Bank Common Lisp (SBCL)]] \diamond [[http://www.sbcl.org/manual/index.html][Online Manual]]
+    [[https://common-lisp.net/project/armedbear/][Steel Bank Common Lisp (SBCL)]] \diamond [[http://www.sbcl.org/manual/index.html][Online User Manual]]
 
     SBCL is a high performance Common Lisp compiler. It is open source
     free software, with a permissive license. In addition to the
@@ -148,6 +210,18 @@ a [[http://webstore.ansi.org/RecordDetail.aspx?sku=INCITS+226-1994%255bS2008%255
        “advanced topics” like macros, CLOS, and packages. Available both in
        print format and on the web.
        - Source Files :: [[./PracticalCL/practicals-1.0.3/]]
+   - [[http://web.archive.org/web/20110709224308/http://psg.com/~dlamkins/sl/cover.html][Successful Lisp: How to Understand and Use Common Lisp]]
+     - David B. Lamkins, 2004--- Provides an overview of Common Lisp for the
+       working programmer.  Introduces key concepts in an easy-to-read format.
+   - [[http://web.archive.org/web/20110907024330/http://www-prod-gif.supelec.fr/docs/cltl/clm/clm.html][Common Lisp the Language]]
+     - Guy L. Steele Jr., Second Edition 1989--- This book is intended to be a
+       language specification rather than an implementation specification
+       (although implementation notes are scattered throughout the text). It
+       defines a set of standard language concepts and constructs that may be
+       used for communication of data structures and algorithms in the Common
+       Lisp dialect. This set of concepts and constructs is sometimes referred
+       to as the ``core Common Lisp language'' because it contains conceptually
+       necessary or important features.
    - Object-Oriented Programming In Common Lisp
      - Sonya Keene, 1989--- With the exception of Practical Common Lisp most
        introductory books don’t emphasize CLOS. This one does. Even if you’re
@@ -159,6 +233,11 @@ a [[http://webstore.ansi.org/RecordDetail.aspx?sku=INCITS+226-1994%255bS2008%255
        shock.
    - Art Of Metaobject Programming
      - Gregor Kiczales et al.
+     - [[https://clos-mop.hexstreamsoft.com][Common Lisp Object System Metaobject Protocol]], chapters 5 and 6
+     - [[https://github.com/Hexstream/clos-mop.hexstreamsoft.com][Hexstream/clos-mop.hexstreamsoft.com]] -- This project is an
+       "Hexstreamification" of Robert Strandh's public domain HTML version of
+       the CLOS MOP. It is by far the best version of the CLOS MOP
+       specification as of 15 october 2017.
    - [[https://github.com/norvig/paip-lisp][Paradigms Of Artificial Intelligence Programming]]
      - Peter Norvig, 1992--- Good information on general Common Lisp
        programming, and many nontrivial examples. Whether or not your work is
@@ -167,7 +246,12 @@ a [[http://webstore.ansi.org/RecordDetail.aspx?sku=INCITS+226-1994%255bS2008%255
        Studies in Common Lisp/ by Peter Norvig (1992), and the code contained
        therein. The copyright has reverted to the author, who has shared it
        here under MIT license.
-
+   - HexstreamSoft Programming articles --- Mostly about Common Lisp.
+     - [[https://www.hexstreamsoft.com/articles/notes-tips-standard-common-lisp-symbols/][Notes and tips: Standard Common Lisp symbols]] --- Informal yet helpful
+       information on the standard symbols and their bindings.
+     - [[https://www.hexstreamsoft.com/articles/getting-started-with-the-clhs/][Getting Started with the Common Lisp HyperSpec]] --- Learn about the
+       definitive Common Lisp reference and how to use it more effectively.
+     - [[https://www.hexstreamsoft.com/articles/common-lisp-format-reference/][Common Lisp FORMAT reference]]
 
 ** Derived Works of Lisp
 
@@ -246,7 +330,7 @@ a [[http://webstore.ansi.org/RecordDetail.aspx?sku=INCITS+226-1994%255bS2008%255
 #+OPTIONS: html-link-use-abs-url:nil html-postamble:auto
 #+OPTIONS: html-preamble:t html-scripts:t html-style:t
 #+OPTIONS: html5-fancy:t tex:t H:5 ':t
-#+HTML_DOCTYPE: xhtml-strict
+#+HTML_DOCTYPE: xhtml5
 #+HTML_CONTAINER: div
 #+DESCRIPTION:
 #+KEYWORDS:
