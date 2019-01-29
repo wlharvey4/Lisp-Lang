@@ -2,11 +2,11 @@
 
 #+TITLE: On the Lisp Language
 #+AUTHOR: WLHarvey4
-#+DATE: 2019-01-28 Mon 12:09
-#+MACRO: VERSION Version 0.0.5
+#+DATE: 2019-01-29 Tue 07:43
+#+MACRO: VERSION Version 0.0.6
 
 #+ATTR_HTML: :width 25%
-[[./img/lisp-logo.png]]
+[[file:img/lisp-logo.png]]
 
 * Common Lisp
 
@@ -67,7 +67,6 @@
     - Multiple-values
     - Meta Object protocol.
 
-
 ** Features of Common Lisp
 
    [[http://random-state.net/features-of-common-lisp.html][Features of Common Lisp]] by Abhishek Reddy
@@ -104,6 +103,43 @@
      at an audience of implementors and knowledgeable programmers. It
      is neither a tutorial nor an implementation guide.
      #+END_EXAMPLE
+
+   - [[https://mitpress.mit.edu/sites/default/files/sicp/index.html][Structure and Interpretation of Computer Programs]]
+     - Abelson, Hal, Sussman, Julie, and Sussman, Jerry 1984--- SICP uses the
+       Scheme dialect of Lisp. Scheme implementations are available for most
+       common platforms. From MIT, we supply free implementations of the MIT
+       Scheme programming environment. This page provides information on how to
+       obtain copies of MIT Scheme as well as other implementations.
+
+       MIT's entry-level computing subject, 6.001, emphasizes controlling the
+       complexity of software systems through general techniques common to all
+       engineering design: building abstractions to hide details and to
+       separate specification from implementation, establishing conventional
+       interfaces to allow the creation of standard modules, and shifting modes
+       of linguistic description.  Students are brought to appreciate a
+       diversity of major programming paradigms: data abstraction, rule-based
+       systems, object-oriented programming, functional programming, logic
+       programming, and constructing embedded interpreters. Beyond that, there
+       is a central concern with the technology of implementing languages and
+       linguistic support for programming paradigms. Students are encouraged to
+       regard themselves as language designers and implementors rather than
+       only language users.
+     - [[https://people.eecs.berkeley.edu/~bh/sicp.html][Why /Structure and Interpretation of Computer Programs/ matters]], by Brian Harvey (2011)
+
+     - https://web.mit.edu/alexmv/6.037/sicp.pdf--- PDF version
+     - https://sarabander.github.io/sicp/--- HTML version
+       #+ATTR_HTML: :textarea t :width 60
+       #+BEGIN_EXAMPLE
+       Sarabander's edition is definitely a huge credit to it's author: It
+       isn't just a reprint of SICP; The text and it's font has been updated,
+       many of the diagrams have been redone for clarity and the document and
+       footnotes are hyperlinked.
+       #+END_EXAMPLE
+     - https://github.com/sarabander/sicp/--- HTML/EPUB3 sources
+     - https://www.neilvandyke.org/sicp-texi/--- Texinfo format
+     - https://github.com/zv/SICP-guile--- Guide
+     - [[https://xuanji.appspot.com/isicp/][Interactive Version]] of Structure and Interpretation of Computer Programs by
+       - [[https://github.com/IIIIllllIIIIllllIIIIllllIIIIllllIIIIll/isicp][Li Xuanji]] GitHub account
 
 [fn:official-standard] The document ANSI INCITS 226-1994 (formerly
 ANSI X3.226:1994) American National Standard for Programming Language
@@ -252,6 +288,29 @@ a [[http://webstore.ansi.org/RecordDetail.aspx?sku=INCITS+226-1994%255bS2008%255
      - [[https://www.hexstreamsoft.com/articles/getting-started-with-the-clhs/][Getting Started with the Common Lisp HyperSpec]] --- Learn about the
        definitive Common Lisp reference and how to use it more effectively.
      - [[https://www.hexstreamsoft.com/articles/common-lisp-format-reference/][Common Lisp FORMAT reference]]
+   - [[http://landoflisp.com/][Land of Lisp]]
+     - Conrad Barski, 2010--- Learn to Program in Lisp, One Game at a Time!
+       Barski's thesis is that Lisp is a refreshing alternative - it offers
+       BASIC's ease of getting started (get a prompt, type in code, and it
+       works), while providing a combination of modern features unmatched in
+       other programming languages.  Land of Lisp builds up to cover topics
+       like graph theory, search algorithms, functional and network
+       programming, and domain-specific languages. All throughout, the book
+       emphasizes various techniques for doing I/O. The topics covered will
+       leave the reader with a solid understanding of what modern programming
+       entails and a good basis from which to explore either application or
+       lower-level systems programming.
+
+       The most unintentionally impressive aspect of Land of Lisp is that it
+       manages to completely explain web programming. No more hiding behind
+       complicated software stacks and impenetrable web server packages -
+       chapter 13, titled "Let's Create a Web Server!," does exactly what it
+       promises, in only 15 pages. Later chapters introduce HTML and SVG to
+       build a graphical game as a web application. If nothing else, this book
+       will leave the reader with all the necessary basic skills and total
+       confidence in their understanding to build real-world web applications.
+     - [[http://landoflisp.com/source.html][Source Code]]
+     - [[http://landoflisp.com/errata.html][Errata]]
 
 ** Derived Works of Lisp
 
