@@ -2,13 +2,59 @@
 
 #+TITLE: On the Lisp Language
 #+AUTHOR: WLHarvey4
-#+DATE: 2019-01-29 Tue 07:43
-#+MACRO: VERSION Version 0.0.6
+#+DATE: 2019-01-29 Tue 11:41
+#+MACRO: VERSION Version 0.0.7
 
 #+ATTR_HTML: :width 25%
-[[file:img/lisp-logo.png]]
+[[file:img/440px-Lisplogo.png]]
+
+* LISP
+
+  /[[https://aiplaybook.a16z.com/reference-material/mccarthy-1960.pdf][Recursive Functions of Symbolic Expressions and Their Computation by Machine, Part I]]/
+  - John McCarthy 1960
+    - [[http://www-formal.stanford.edu/jmc/recursive/recursive.html][HTML Format]] (linked from [[http://www-formal.stanford.edu/jmc/][McCarthy's Home Page]])
+    - [[http://edge.cs.drexel.edu/regli/Classes/Lisp_papers/McCarthy-original-LISP-paper-recursive.pdf][LaTeXed Format]]
+
+    #+ATTR_HTML: :textarea t :width 60
+    #+BEGIN_EXAMPLE
+    In 1960, John McCarthy published a remarkable paper in which he did for
+    programming something like what Euclid did for geometry. He showed how,
+    given a handful of simple operators and a notation for functions, you can
+    build a whole programming language. He called this language Lisp, for "List
+    Processing," because one of his key ideas was to use a simple data
+    structure called a list for both code and data.
+    #+END_EXAMPLE
+
+  Originally specified in 1958, Lisp is the second-oldest high-level
+  programming language in widespread use today, with Fortran being one year
+  older.  Today, the best known general-purpose Lisp dialects are
+  - Common Lisp,
+  - Scheme, and
+  - Clojure.
+
+
+  Lisp was originally created as a practical mathematical notation for computer
+  programs, influenced by the notation of Alonzo Church's lambda calculus.
+  - Church, A., /The Calculi of Lambda Conversion/, Princeton University Press,
+    Princeton, N.J., 1941.
+  - [[https://web.archive.org/web/20011206080336/http://www.jetcafe.org/~jim/lambda.html][An Introduction to Lambda Calculus and Scheme]], by Jim Larson (1996)
+  - [[http://www.cse.chalmers.se/research/group/logic/TypesSS05/Extra/geuvers.pdf][Introduction to Lambda Calculus]] (pdf), by Barendregt and Barendsen (2000)
+  - [[https://apps.dtic.mil/dtic/tr/fulltext/u2/a030751.pdf][Lambda: The Ultimate Imperative]] (pdf), by Guy Steele Jr. and Gerald Sussman
+    (1976)
+    - [[https://dspace.mit.edu/bitstream/handle/1721.1/5790/AIM-353.pdf][Cleaner pdf version]]
+    - [[https://en.wikisource.org/wiki/Lambda:_The_Ultimate_Imperative][Wiki]] (partial) version
+  - [[http://www.paulgraham.com/rootsoflisp.html][The Roots of Lisp]]
+    - Paul Graham, 2001--- In this article I'm going to try to explain in the
+      simplest possible terms what McCarthy discovered. The point is not just
+      to learn about an interesting theoretical result someone figured out
+      forty years ago, but to show where languages are heading.
+  - [[http://www.norvig.com/lisp_talk_final.hmt][Lisp: Where Do We Come From? What Are We? Where Are We Going?]]
+    - Peter Norvig, NASA Ames Research Center, 1999
 
 * Common Lisp
+
+  #+ATTR_HTML: :width 25%
+  [[file:img/lisp-logo.png]]
 
 ** What Common Lisp Is
 
@@ -234,6 +280,10 @@ a [[http://webstore.ansi.org/RecordDetail.aspx?sku=INCITS+226-1994%255bS2008%255
        Cambridge, Mass., April 1960
    - [[http://www-formal.stanford.edu/jmc/lisp20th.html][Lisp---Notes on its Past and Future]]
      - John McCarthy, 1980
+   - [[http://www.cs.cmu.edu/~dst/LispBook/index.html][Common Lisp: A Gentle Introduction to Symbolic Computation]]
+     - David S. Touretzky, 1990--- Excellent and comprehensivee introductory
+       text on Lisp and symbolic computation.
+     - [[http://www-2.cs.cmu.edu/~dst/Lisp/][Software]]
    - [[http://www.paulgraham.com/onlisp.html][On Lisp]]
      - Paul Graham, 1993--- An in-depth treatment of macros, but not recommended
        as a first Common Lisp book, since it is slightly pre-ANSI so you need
@@ -249,7 +299,7 @@ a [[http://webstore.ansi.org/RecordDetail.aspx?sku=INCITS+226-1994%255bS2008%255
    - [[http://web.archive.org/web/20110709224308/http://psg.com/~dlamkins/sl/cover.html][Successful Lisp: How to Understand and Use Common Lisp]]
      - David B. Lamkins, 2004--- Provides an overview of Common Lisp for the
        working programmer.  Introduces key concepts in an easy-to-read format.
-   - [[http://web.archive.org/web/20110907024330/http://www-prod-gif.supelec.fr/docs/cltl/clm/clm.html][Common Lisp the Language]]
+   - [[http://www.cs.cmu.edu/Groups/AI/html/cltl/cltl2.html][Common Lisp the Language]] (2nd Edition)
      - Guy L. Steele Jr., Second Edition 1989--- This book is intended to be a
        language specification rather than an implementation specification
        (although implementation notes are scattered throughout the text). It
@@ -258,6 +308,17 @@ a [[http://webstore.ansi.org/RecordDetail.aspx?sku=INCITS+226-1994%255bS2008%255
        Lisp dialect. This set of concepts and constructs is sometimes referred
        to as the ``core Common Lisp language'' because it contains conceptually
        necessary or important features.
+     - The authoritative Lisp reference book.  Not much of a text book.
+   - [[https://franz.com/resources/educational_resources/cooper.book.pdf][Basic Lisp Techniques]]
+     - David J. Cooper, Jr., 2011--- Introduction to Lisp programming with an
+       emphasis on the [[https://franz.com/downloads/clp/survey][Franz Allegro Common Lisp]] environment, Emacs and Unix.
+       - [[https://franz.com/support/documentation/current/doc/][Allegro CL Documentation]]
+   - [[http://lispcookbook.github.io/cl-cookbook/][The Common Lisp Cookbook]]
+     - This is a collaborative project that aims to provide for Common Lisp
+       something similar to the [[http://www.oreilly.com/catalog/cookbook/][Perl Cookbook]] published by O’Reilly. More
+       details about what it is and what it isn’t can be found in this [[http://groups.google.com/groups?threadm=m3it9soz3m.fsf%2540bird.agharta.de][thread]]
+       from [[news:comp.lang.lisp][comp.lang.lisp]].
+     - [[https://github.com/LispCookbook/cl-cookbook][LispCookbook/cl-cookbook]]
    - Object-Oriented Programming In Common Lisp
      - Sonya Keene, 1989--- With the exception of Practical Common Lisp most
        introductory books don’t emphasize CLOS. This one does. Even if you’re
@@ -282,6 +343,8 @@ a [[http://webstore.ansi.org/RecordDetail.aspx?sku=INCITS+226-1994%255bS2008%255
        Studies in Common Lisp/ by Peter Norvig (1992), and the code contained
        therein. The copyright has reverted to the author, who has shared it
        here under MIT license.
+     - Lisp code for the textbook /Paradigms of Artificial Intelligence
+       Programming/
    - HexstreamSoft Programming articles --- Mostly about Common Lisp.
      - [[https://www.hexstreamsoft.com/articles/notes-tips-standard-common-lisp-symbols/][Notes and tips: Standard Common Lisp symbols]] --- Informal yet helpful
        information on the standard symbols and their bindings.
@@ -312,9 +375,9 @@ a [[http://webstore.ansi.org/RecordDetail.aspx?sku=INCITS+226-1994%255bS2008%255
      - [[http://landoflisp.com/source.html][Source Code]]
      - [[http://landoflisp.com/errata.html][Errata]]
 
-** Derived Works of Lisp
+** Languages Derived from Lisp
 
-*** Scheme
+*** Scheme \diams Racket \diams Clojure
 
     - [[https://www.scheme.com/tspl4/][The Scheme Programming Language]] (2009 4th Edition) by R. Kent Dybvig
     - [[https://racket-lang.org/][The Racket Programming Language]]
@@ -398,7 +461,7 @@ a [[http://webstore.ansi.org/RecordDetail.aspx?sku=INCITS+226-1994%255bS2008%255
 #+HTML_MATHJAX:
 #+HTML_HEAD:
 #+HTML_HEAD_EXTRA:
-#+SUBTITLE:
+#+SUBTITLE:LISt Processor
 #+INFOJS_OPT:
 #+CREATOR: <a href="https://www.gnu.org/software/emacs/">Emacs</a> 26.1 (<a href="https://orgmode.org">Org</a> mode 9.1.14)
 #+LATEX_HEADER:
