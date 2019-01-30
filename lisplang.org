@@ -2,8 +2,8 @@
 
 #+TITLE: On the Lisp Language
 #+AUTHOR: WLHarvey4
-#+DATE: 2019-01-29 Tue 17:04
-#+MACRO: VERSION Version 0.0.10
+#+DATE: 2019-01-29 Tue 22:37
+#+MACRO: VERSION Version 0.0.11
 
 #+ATTR_HTML: :width 25%
 [[file:img/440px-Lisplogo.png]]
@@ -430,8 +430,16 @@ a [[http://webstore.ansi.org/RecordDetail.aspx?sku=INCITS+226-1994%255bS2008%255
        confidence in their understanding to build real-world web applications.
      - [[http://landoflisp.com/source.html][Source Code]]
      - [[http://landoflisp.com/errata.html][Errata]]
-   - [[file:lisplang.html#orgfd84add][The Little Lisper]] (3rd Edition)
-     - Friedman and Felleisen, 1989
+   - [[file:lisplang.html#orgfd84add][The Little LISPer]] (3rd Edition)
+     - Friedman and Felleisen, 1989--- In 1974, Daniel P. Friedman published a
+       little book called /The Little LISPer/. It was only 68 pages, but it did
+       a remarkable thing: It could teach you to think recursively. ... it
+       wasn't really about LISP, it was about recursive functions. You didn't
+       need a computer in order to work through the exercises.  /The Little
+       Schemer/ (Fourth Edition), updated by Friedman and Matthias Felleisen,
+       now conforms more closely to a real programming language, Scheme, and
+       has new chapters which delve much deeper into recursive function theory
+       and language processors.
    - [[https://pages.lip6.fr/Christian.Queinnec/WWW/LiSP.html][Lisp In Small Pieces]]
      - Christian Queinnec, 1996
 
@@ -443,6 +451,14 @@ a [[http://webstore.ansi.org/RecordDetail.aspx?sku=INCITS+226-1994%255bS2008%255
       - [[https://7chan.org/pr/src/The_Little_Schemer_4th_2.pdf][The Little Schemer]] (4th Edition 1996)
         - Friedman and Felleisen (forward by Sussman)
         - https://www.viget.com/articles/the-little-schemer-will-expand-blow-your-mind/
+        - [[https://crockford.com/javascript/little.html][The Little JavaScripter]]
+          - Douglas Crockford--- JavaScript has much in common with Scheme. It
+            is a dynamic language. It has a flexible datatype (arrays) that can
+            easily simulate s-expressions. And most importantly, functions are
+            lambdas.  Because of this deep similarity, all of the functions in
+            /The Little Schemer/ can be written in JavaScript.
+      - [[https://www.cs.unm.edu/~williams/cs357/springer-friedman.pdf][Scheme and the Art of Programming]]
+        - Springer and Friedman, 1989
     - [[https://racket-lang.org/][The Racket Programming Language]]
       - [[https://htdp.org/][How to Design Programs]] January 6th, 2018 10:01:30pm
         - Felleisen, Findler, Flatt & Krishnamurthi
@@ -517,6 +533,32 @@ a [[http://webstore.ansi.org/RecordDetail.aspx?sku=INCITS+226-1994%255bS2008%255
      Marco Baringer's [[https://www.youtube.com/watch?v=NUpAvqa5hQw][SLIME tutorial]] from 2005
 
      Baggers' [[https://www.youtube.com/watch?v=sBcPNr1CKKw][Emacs with SLIME]] — Really useful keyboard shortcuts from 2014.
+
+* Query
+
+  If you, being a computer engineer, where given the opportunity to accept or
+  reject the gift of the most powerful computer on the planet, what would be
+  some reasons why you would reject it?  Would the way it looks be one of them?
+
+  - "I'm sorry, it just looks so..."
+
+  #+BEGIN_EXAMPLE
+  So if Lisp makes you a better programmer, like [Eric Raymond] says, why
+  wouldn't you want to use it? If a painter were offered a brush that would
+  make him a better painter, it seems to me that he would want to use it in all
+  his paintings, wouldn't he?  What he says about Lisp is pretty much the
+  conventional wisdom. But there is a contradiction in the conventional wisdom:
+  Lisp will make you a better programmer, and yet you won't use it.  Why not?
+
+  What's so great about Lisp? And if Lisp is so great, why doesn't everyone use
+  it? These sound like rhetorical questions, but actually they have
+  straightforward answers. Lisp is so great not because of some magic quality
+  visible only to devotees, but because it is simply the most powerful language
+  available. And the reason everyone doesn't use it is that programming
+  languages are not merely technologies, but habits of mind as well, and
+  nothing changes slower.
+  #+END_EXAMPLE
+  ---Paul Graham, /[[file:lisplang.html#org6990e82][Want to Start a Startup?]]/, 2001, 2003
 
 * HTML EXPORT SETUP                                                :noexport:
 #+OPTIONS: html-link-use-abs-url:nil html-postamble:auto
