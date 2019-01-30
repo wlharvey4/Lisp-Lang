@@ -2,11 +2,21 @@
 
 #+TITLE: On the Lisp Language
 #+AUTHOR: WLHarvey4
-#+DATE: 2019-01-29 Tue 15:46
-#+MACRO: VERSION Version 0.0.8
+#+DATE: 2019-01-29 Tue 16:07
+#+MACRO: VERSION Version 0.0.9
 
 #+ATTR_HTML: :width 25%
 [[file:img/440px-Lisplogo.png]]
+
+#+BEGIN_QUOTE
+"/Lisp wasn't designed to fix the mistakes in Fortran; it came about more as
+the byproduct of an attempt to axiomatize computation./" --- Paul Graham, What
+Made Lisp Different
+
+"/LISP will become obsolete when someone makes a more comprehensive language
+that dominates LISP practically and also gives a clear mathematical semantics to a more comprehensive set of features./"
+--- John McCarthy, History of Lisp---Conclusions
+#+END_QUOTE
 
 * LISP
 
@@ -24,6 +34,11 @@
     Processing," because one of his key ideas was to use a simple data
     structure called a list for both code and data.
     #+END_EXAMPLE
+
+  - [[http://www-formal.stanford.edu/jmc/history/lisp/node2.html][LISP prehistory - Summer 1956 through Summer 1958]].
+  - [[http://www-formal.stanford.edu/jmc/history/lisp/lisp.html][History of Lisp]], John McCarthy, 1979--- "...we started by hand-compiling
+    various functions into assembly language and writing subroutines to provide
+    a LISP 'environment'."
 
   Originally specified in 1958, Lisp is the second-oldest high-level
   programming language in widespread use today, with Fortran being one year
@@ -51,7 +66,7 @@
   - [[http://www.paulgraham.com/diff.html][What Made Lisp Different]]
     - Paul Graham, 2002--- When McCarthy designed Lisp in the late 1950s, it
       was a radical departure from existing languages, the most important of
-      which was Fortran.  Lisp embodied nine new ideas:
+      which was [[http://www.paulgraham.com/history.html][Fortran]].  Lisp embodied nine new ideas:
       1. Conditionals (invented by McCarthy in the course of developing Lisp)
       2. A function type (In Lisp, functions are first class objects)
       3. Recursion (Lisp was the first programming language to support it)
