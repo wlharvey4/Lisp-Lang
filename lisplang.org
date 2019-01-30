@@ -2,8 +2,8 @@
 
 #+TITLE: On the Lisp Language
 #+AUTHOR: WLHarvey4
-#+DATE: 2019-01-29 Tue 16:07
-#+MACRO: VERSION Version 0.0.9
+#+DATE: 2019-01-29 Tue 17:04
+#+MACRO: VERSION Version 0.0.10
 
 #+ATTR_HTML: :width 25%
 [[file:img/440px-Lisplogo.png]]
@@ -16,6 +16,10 @@ Made Lisp Different
 "/LISP will become obsolete when someone makes a more comprehensive language
 that dominates LISP practically and also gives a clear mathematical semantics to a more comprehensive set of features./"
 --- John McCarthy, History of Lisp---Conclusions
+
+"/But there is a contradiction in the conventional wisdom: Lisp will make you a
+better programmer, and yet you won't use it./" --- Paul Graham, /Want to Start a
+Startup?/
 #+END_QUOTE
 
 * LISP
@@ -234,6 +238,7 @@ that dominates LISP practically and also gives a clear mathematical semantics to
 ANSI X3.226:1994) American National Standard for Programming Language
 Common LISP is the official standard, available on paper [[http://www.techstreet.com/cgi-bin/detail?product_id=56214][here]]. Here is
 a [[http://webstore.ansi.org/RecordDetail.aspx?sku=INCITS+226-1994%255bS2008%255d][PDF version]].
+     - [[http://cvberry.com/tech_writings/notes/common_lisp_standard_draft.html][Common Lisp Standard Draft]]
 
 ** Common Lisp Implementations
 
@@ -333,6 +338,14 @@ a [[http://webstore.ansi.org/RecordDetail.aspx?sku=INCITS+226-1994%255bS2008%255
        to be on your guard against non-standard usages, and since it doesn’t
        really even try to cover the language as a whole, focusing solely on
        macros.
+   - [[http://www.paulgraham.com/acl.html][ANSI Common Lisp]]
+     - Paul Graham, 1995--- ANSI Common Lisp combines an introduction to Lisp
+       programming, and a convenient, up-to-date reference manual for ANSI
+       Common Lisp. Beginners will find that its careful explanations and
+       interesting examples make Lisp programming easy to learn. Professional
+       programmers will appreciate its thorough, practical approach.
+     - [[https://7chan.org/pr/src/ANSI_Common_Lisp_-_Paul_Graham.pdf][Link]]
+     - [[https://github.com/clojurians-org/lisp-ebook/blob/master/ANSI%2520Common%2520LISP.pdf][Link]]
    - [[http://www.gigamonkeys.com/book/][Practical Common Lisp]]
      - Peter Seibel---
        An excellent introduction to the language, covering both the basics and
@@ -417,14 +430,28 @@ a [[http://webstore.ansi.org/RecordDetail.aspx?sku=INCITS+226-1994%255bS2008%255
        confidence in their understanding to build real-world web applications.
      - [[http://landoflisp.com/source.html][Source Code]]
      - [[http://landoflisp.com/errata.html][Errata]]
+   - [[file:lisplang.html#orgfd84add][The Little Lisper]] (3rd Edition)
+     - Friedman and Felleisen, 1989
+   - [[https://pages.lip6.fr/Christian.Queinnec/WWW/LiSP.html][Lisp In Small Pieces]]
+     - Christian Queinnec, 1996
 
 ** Languages Derived from Lisp
 
 *** Scheme \diams Racket \diams Clojure
 
     - [[https://www.scheme.com/tspl4/][The Scheme Programming Language]] (2009 4th Edition) by R. Kent Dybvig
+      - [[https://7chan.org/pr/src/The_Little_Schemer_4th_2.pdf][The Little Schemer]] (4th Edition 1996)
+        - Friedman and Felleisen (forward by Sussman)
+        - https://www.viget.com/articles/the-little-schemer-will-expand-blow-your-mind/
     - [[https://racket-lang.org/][The Racket Programming Language]]
+      - [[https://htdp.org/][How to Design Programs]] January 6th, 2018 10:01:30pm
+        - Felleisen, Findler, Flatt & Krishnamurthi
+      - [[http://www.eopl3.com/][Essentials of Programming Languages]] (3rd Edition)
+        - [[https://github.com/mwand/eopl3][GitHub Site]] --- The code dates from 2009. It has now been updated and
+          should run right out of the box on Racket version 6.11.
+      - [[https://course.ccs.neu.edu/cs5010f17/][CS 5010: Program Design Paradigms]] 2017
     - [[https://clojure.org/][The Clojure Programming Language]]
+      - [[https://github.com/clojurians-org][Clojurians]]
 
 ** Emacs
 
