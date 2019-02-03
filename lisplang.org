@@ -2,8 +2,8 @@
 
 #+TITLE: On the Lisp Language
 #+AUTHOR: WLHarvey4
-#+DATE: 2019-01-29 Tue 22:37
-#+MACRO: VERSION Version 0.0.11
+#+DATE: 2019-02-02 Sat 23:13
+#+MACRO: VERSION Version 0.0.12
 
 #+ATTR_HTML: :width 25%
 [[file:img/440px-Lisplogo.png]]
@@ -14,13 +14,24 @@ the byproduct of an attempt to axiomatize computation./" --- Paul Graham, What
 Made Lisp Different
 
 "/LISP will become obsolete when someone makes a more comprehensive language
-that dominates LISP practically and also gives a clear mathematical semantics to a more comprehensive set of features./"
---- John McCarthy, History of Lisp---Conclusions
+that dominates LISP practically and also gives a clear mathematical semantics
+to a more comprehensive set of features./" --- John McCarthy, History of
+Lisp---Conclusions
 
 "/But there is a contradiction in the conventional wisdom: Lisp will make you a
 better programmer, and yet you won't use it./" --- Paul Graham, /Want to Start a
 Startup?/
 #+END_QUOTE
+
+#+BEGIN_SRC lisp -n :tangle src/hello-world.lisp :exports both :results output
+;#! /usr/bin/env sbcl --script
+(defun hello-world ()
+  (format t "Hello, World!~%"))
+(hello-world)
+#+END_SRC
+
+#+RESULTS:
+: Hello, World!
 
 * LISP
 
@@ -448,6 +459,14 @@ a [[http://webstore.ansi.org/RecordDetail.aspx?sku=INCITS+226-1994%255bS2008%255
 *** Scheme \diams Racket \diams Clojure
 
     - [[https://www.scheme.com/tspl4/][The Scheme Programming Language]] (2009 4th Edition) by R. Kent Dybvig
+      - Originally designed at M.I.T., where it was quickly put to use as a
+        teaching language for undergraduate computer science courses, Scheme
+        has always been aimed at a different language niche than Common
+        Lisp. In particular, Scheme's designers have focused on keeping the
+        core language as small and as simple as possible. This has obvious
+        benefits for a teaching language and also for programming language
+        researchers who like to be able to formally prove things about
+        languages.
       - [[https://7chan.org/pr/src/The_Little_Schemer_4th_2.pdf][The Little Schemer]] (4th Edition 1996)
         - Friedman and Felleisen (forward by Sussman)
         - https://www.viget.com/articles/the-little-schemer-will-expand-blow-your-mind/
