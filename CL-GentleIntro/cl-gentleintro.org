@@ -1,0 +1,535 @@
+# -*- mode:org; fill-column:79; -*-
+
+#+TITLE:Common Lisp
+#+SUBTITLE:A Gentle Introduction to Symbolic Computation
+#+AUTHOR:David S. Touretzky, Carnegie Mellon University
+#+DATE:1990
+
+#+TEXINFO:@insertcopying
+
+* Preface
+  :PROPERTIES:
+  :UNNUMBERED:
+  :END:
+
+  This book is about learning to program in Lisp.  Lisp is an
+  excellent language for beginners.  It is increasingly the language
+  of choice in introductory programming courses due to its friendly,
+  interactive environment, rich data structures, and powerful software
+  tools that even a novice can master in short order.
+
+  The author had three types of readers in mind:
+
+  - Students taking their first programming course--- ::
+
+       The student could be from any discipline, from computer science
+       to the humanities. For you, let me stress the word /gentle/ in
+       the title. I assume no prior mathematical background beyond
+       arithmetic. Even if you don’t like math, you may find you enjoy
+       computer programming. I’ve avoided technical jargon, and there
+       are lots of examples. Also you will find plenty of exercises
+       interspersed with the text, and the answers to all of them are
+       included in Appendix C.
+
+  - Psychologists, linguists, computer scientists--- ::
+
+       (and other persons interested in Artificial Intelligence.)  As
+       you begin your inquiry into AI, you will see that almost all
+       research in this field is carried out in Lisp. Most Lisp texts
+       are written exclusively for computer science majors, but I have
+       gone to great effort to make /this/ book accessible to
+       everyone. It can be your doorway to the technical literature of
+       AI, as well as a quick introduction to its central tool.
+
+  - Computer hobbyists--- ::
+
+       Prior to about 1984, the Lisps available on personal computers
+       weren’t very good due to the small memories of the early
+       machines. Today’s personal computers often come with several
+       megabytes of RAM and a hard disk as standard equipment. They
+       run full implementations of the Common Lisp standard, and
+       provide the same high-quality tools as the Lisps in university
+       and industrial research labs. The ``Lisp Toolkit'' sections of
+       this book will introduce you to the advanced features of the
+       Common Lisp programming environment that have made the language
+       such a productive tool for rapid prototyping and AI
+       programming.
+
+
+  This current volume of the ``gentle introduction'' uses Common Lisp
+  throughout. Lisp has been changing continuously since its invention
+  30 years ago. In the past, not only were the Lisp dialects on
+  different machines incompatible, but programs written in one dialect
+  would often no longer run in that same dialect a few years later,
+  because the language had evolved out from under them. Rapid,
+  unconstrained evolution was beneficial in the early days, but demand
+  for a standard eventually grew, so Common Lisp was created. At
+  present, Common Lisp is the /de facto/ standard supported by all
+  major computer manufacturers. It is currently undergoing refinement
+  into an official standard. But Lisp will continue to evolve
+  nonetheless, and the standard will be updated periodically to
+  reflect new contributions people have made to the language. Perhaps
+  one of those contributors will be you.
+
+* Note to Instructors
+  :PROPERTIES:
+  :UNNUMBERED:
+  :END:
+
+  #+CINDEX:instruction, effective
+  #+CINDEX:variables
+  #+CINDEX:scope
+  #+CINDEX:assignment
+  #+CINDEX:teaching tools
+  #+CINDEX:tools, teaching
+  Much has been learned in the last few years about how to teach Lisp
+  effectively to beginners: where they stumble and what we can do
+  about it. In addition, the switch to Common Lisp has necessitated
+  changes in the way certain topics are taught, especially variables,
+  scoping, and assignment. This version of the ‘‘gentle introduction’’
+  has been completely revised for Common Lisp, and includes several
+  new teaching tools that I believe you will find invaluable in the
+  classroom. Let me share with you some of the thinking behind this
+  book’s novel approach to Lisp.
+
+** Graphical Notation
+
+   {{{heading(Summary of `Box-and-Arrow' Notation)}}}
+
+   - graphical box-and-arrow notation
+   - primitive functions
+   - function composition
+   - computation
+   - fundamental data structures
+     - numbers
+     - symbols
+     - lists
+   - programs and data visually distinct
+   - lack of explicit variables
+   - EVAL notation
+     - quoting
+     - named variables
+
+
+   {{{heading(`Box-and-Arrow' Notation)}}}
+
+    #+CINDEX:box-and-arrow notation
+    #+CINDEX:notation, box-and-arrow
+    #+CINDEX:functions, primitive
+    #+CINDEX:primitive functions
+    #+CINDEX:function composition
+    #+CINDEX:composition, function
+    The first two chapters use a graphical *box-and-arrow notation*
+    for describing
+    - /primitive functions/ and
+    - /function composition/.
+
+
+    #+CINDEX:computation
+    #+CINDEX:data structures, fundamental
+    #+CINDEX:numbers, data structure
+    #+CINDEX:symbols, data structure
+    #+CINDEX:lists, data structure
+    {{{noindent}}}This notation allows students to get comfortable
+    with the basic idea of /computation/ and the three /fundamental
+    data structures/—
+    - numbers,
+    - symbols, and
+    - lists
+
+
+    {{{noindent}}}before grappling with side issues such as
+    - the syntax of a function call or
+    - when to use quotes.
+
+
+    #+CINDEX:data, as programs
+    #+CINDEX:programs as data
+    Although sophisticated Lispers profit from the realization that
+    *programs are data*, to the beginner this is a major source of
+    confusion.
+
+    #+CINDEX:box-and_arrow notation, advantages
+    The /box-and-arrow notation/ makes *programs* and *data* visually
+    distinct, and thereby eliminates most syntax errors.
+
+    Another advantage of this notation is its /lack of explicit
+    variables/; the inputs to a function are simply arrows that enter
+    the function definition from outside.  Since there is no computer
+    implementation of function box notation, the first two chapters
+    are designed to be covered rapidly using just pencil and
+    paper.
+
+    This also shelters the student temporarily from another source of
+    frustration—--learning the mechanics of using an actual machine,
+    editing expressions, and coping with the debugger.
+
+*** Experienced Learners
+
+    Readers who are familiar with other programming languages can flip
+    through Chapter 1 in a minute or so, read the summary at the end,
+    and then skim Chapter 2 to pick up the basic list manipulation
+    primitives.
+
+*** EVAL Notation
+
+    #+CINDEX:@samp{EVAL} notation
+    #+CINDEX:notation, @samp{EVAL}
+    #+CINDEX:quoting
+    #+CINDEX:named variables
+    In Chapter 3 the student is introduced to standard EVAL notation;
+    the concepts of quoting and named variables follow fairly
+    naturally.  Now he or she is ready to discard paper and pencil for a
+    real computer (and is probably eager to do so), whereas at the
+    start of the course this might have been viewed with trepidation.
+
+** Other Features
+
+   #+CINDEX:features of book, unique
+   #+CINDEX:evaltrace notation
+   #+CINDEX:Lisp Toolkit
+   #+CINDEX:data structures, graphical representation of
+   #+CINDEX:function objects
+   #+CINDEX:symbols, internal structure of
+   Three other unique features of the book first appear in Chapter 3:
+   - evaltrace notation,
+   - Lisp Toolkit sections, and
+   - a comprehensive graphical representation for Lisp data
+     structures, including function objects and the internal structure
+     of symbols.
+
+*** Evaltrace Notation
+
+    #+CINDEX:evaltrace notation
+    #+CINDEX:evaluation of expressions
+    #+CINDEX:functions, applied to arguments
+    #+CINDEX:variables, created and bound
+    *Evaltrace notation* shows step-by-step
+    - how Lisp expressions are evaluated,
+    - how functions are applied to arguments, and
+    - how variables are created and bound.
+
+
+    #+CINDEX:@code{EVAL}
+    #+CINDEX:@code{APPLY}
+    #+CINDEX:variable scoping
+    #+CINDEX:scoping of variables
+    #+CINDEX:lexical contours, nesting of
+    - The different roles of EVAL and APPLY,
+    - the scoping of variables, and
+    - the nesting of lexical contours
+
+
+    #+CINDEX:process of evaluation
+    #+CINDEX:evaluation process, graphically notated
+    {{{noindent}can all be explained graphically using this notation.
+    It makes the /process of evaluation/ transparent to the student by
+    describing it in a visual language which he or she can remember
+    and use.
+
+*** Lisp Toolkit
+
+    #+CINDEX:List Toolkit
+    #+CINDEX:tools, Lisp Toolkit
+    #+CINDEX:programming aid
+    #+CINDEX:@code{DESCRIBE}
+    #+CINDEX:@code{INSPECT}
+    #+CINDEX:@code{TRACE}
+    #+CINDEX:@code{STEP}
+    #+CINDEX:debugger
+    The Lisp Toolkit sections introduce the various *programming aids*
+    that Common Lisp provides, such as:
+    - ~DESCRIBE~,
+    - ~INSPECT~,
+    - ~TRACE~,
+    - ~STEP~,
+    - and the debugger.
+
+
+    #+CINDEX:tools, unique to book
+    There are also two tools unique to this book; their source code
+    appears in Appendices A and B, and is available on diskette from
+    the publisher.
+
+**** SDRAW
+
+     #+CINDEX:@code{SDRAW}
+     #+CINDEX: @code{cons} cells
+     #+CINDEX:read-eval-draw loop
+     #+CINDEX:@code{CONS}
+     #+CINDEX:@code{LIST}
+     #+CINDEX:@code{APPEND}
+     The first tool, SDRAW, draws ~cons~ cell diagrams. It is part of
+     a read-eval-draw loop that has proven invaluable for teaching
+     beginners to reason about cons cell structures, particularly the
+     differences among ~CONS~, ~LIST~, and ~APPEND~.
+
+**** DTRACE
+
+     #+CINDEX:@code{DTRACE}
+     #+CINDEX:@code{TRACE}
+     #+CINDEX:tracing package
+     #+CINDEX:package, tracing
+     The second tool, DTRACE, is a tracing package that generates more
+     detailed output than most implementations of TRACE, and is
+     therefore more useful for teaching beginners.
+
+*** Graphical Representation of Lisp Data Structures
+
+    #+CINDEX:data structures, graphical representation of
+    #+CINDEX:symbols, internal structure of
+    #+CINDEX:symbol name, function, value, plist, package cells
+    #+CINDEX:plist, symbol
+    #+CINDEX:package cells, symbol
+    Finally, the *graphical representation of Lisp data
+    structures*---particularly the internal structure of symbols with
+    their:
+    - name,
+    - function,
+    - value,
+    - plist, and
+    - package cells
+
+
+    #+CINDEX:interpreters, true nature of
+    #+CINDEX:distinctions between symbols, functions, variables, print names
+    {{{noindent}}}helps students understand the true nature of Lisp
+    interpreters and highlights the distinctions between
+    - symbols,
+    - functions,
+    - variables, and
+    - print names.
+
+** Organization of Later Chapters
+
+   #+CINDEX:side-effect free, programming style
+   The book promotes a clean, side-effect-free style of programming
+   for the first eight chapters.
+
+   #+CINDEX:chapter 7
+   - Chapter 7 ::
+
+                  #+CINDEX:applicative operators
+                  #+CINDEX:operators, applicative
+                  #+CINDEX:lexical closures
+                  #+CINDEX:closures, lexical
+      /Applicative operators/ are introduced, where the student also
+                  learns about /lexical closures/.
+
+                  #+CINDEX:chapter 8
+   - Chapter 8 ::
+
+                  #+CINDEX:dragon stories
+                  #+CINDEX:recursion templates
+                  #+CINDEX:recursive functions
+                  #+CINDEX:recursive style
+      the dragon stories that were a popular feature of the previous
+                  version have been retained, but they are now backed
+                  up with a new device---/recursion templates/---that
+                  helps beginners analyze /recursive functions/ to
+                  extract the essence of the recursive style. Since
+                  some instructors prefer to teach recursion before
+                  applicatives, these two chapters have been written
+                  so that they may be covered in either order.
+
+                  #+CINDEX:chapter 9
+                  #+CINDEX:i/o
+                  #+CINDEX:input output
+   - Chapter 9 :: input/output
+
+                  #+CINDEX:chapter 10
+   - Chapter 10 ::
+
+                   #+CINDEX:assignment
+                   #+CINDEX:variables, ordinary, generalized
+                   #+CINDEX:destructive sequence operations
+                   #+CINDEX:sequence operations, destructive
+                   provides a unified picture of assignment that
+                   includes ordinary variables, generalized variables,
+                   and destructive sequence operations.
+
+                   #+CINDEX:chapter 11
+   - Chapter 11 ::
+
+                   #+CINDEX:iteration
+                   #+CINDEX:@code{DO}, @code{DO*}
+                   #+CINDEX:iterative expressions
+                   #+CINDEX:expressions, iterative
+                   covers iteration, and shows how ~DO~ and ~DO*~ can
+                   be used to construct substantial /iterative
+                   expressions/ with no explicit assignments.
+
+                   #+CINDEX:chapter 12
+   - Chapter 12 ::
+
+                   #+CINDEX:structures
+                   introduces /structures/.
+
+                   #+CINDEX:chapter 13
+   - Chapter 13 ::
+
+                   #+CINDEX:arrays
+                   #+CINDEX:hash tables
+                   #+CINDEX:property lists
+                   covers arrays, hash tables, and property lists.
+
+                   #+CINDEX:chapter 14
+   - Chapter 14 ::
+
+                   #+CINDEX:macros
+                   #+CINDEX:compilation
+                   #+CINDEX:scoping, lexical and dynamic, difference between
+                   #+CINDEX:evaltrace diagrams
+                   #+CINDEX:macros, semantics
+                   #+CINDEX:special variables, semantics
+                   #+CINDEX:variables, special, semantics
+                   #+CINDEX:semantics, macros and special variables, difference between
+                   is devoted to /macros/ and /compilation/.  It also
+                   explains the difference between /lexical/ and /dynamic
+                   scoping/.  Evaltrace diagrams clarify the /semantics
+                   of macros and special variables/.
+
+** Emphasis on Simplicity
+
+   #+CINDEX:simplicity
+   Because Common Lisp is such a complex language, there are a few
+   places where I have chosen to simplify things to better meet the
+   needs of beginners.
+
+   For example:
+
+     #+CINDEX:@code{1+}, @code{1-} functions
+   - the ~1+~ and ~1-~ functions are banished from this book because
+     their names are very confusing.
+     #+CINDEX:predicates, use of
+     #+CINDEX:@code{EQUAL}
+     #+CINDEX:@code{EQ}
+     #+CINDEX:@code{EQL}
+     #+CINDEX:@code{EQUALP}
+     #+CINDEX:@code{=}
+   - The book relies almost exclusively on ~EQUAL~ because this is the
+     most useful equality predicate.
+     - ~EQ~, ~EQL~, ~EQUALP~, and ~=~ are mentioned in advanced topics
+       sections, but not used very much.
+     #+CINDEX:@code{PUSHNEW}
+   - In a few places I have chosen to write a function slightly less
+     concisely rather than introduce one of the more obscure
+     primitives like ~PUSHNEW~.
+     #+CINDEX:advanced features
+     #+CINDEX:features, advanced
+     #+CINDEX:multiple values
+     #+CINDEX:values, multiple
+     #+CINDEX:package system
+   - And I make no attempt to cover the most advanced features, such
+     as
+     - multiple values or
+     - the package system.
+
+
+*** Why Not Teach Scheme?
+
+    #+CINDEX:Scheme
+    Some people prefer to teach Scheme in introductory courses because
+    it is so much smaller than Common Lisp. But one can easily teach
+    the subset of Common Lisp that is equivalent to Scheme, so
+    language size isn’t really an issue for beginners.
+
+    #+CINDEX:application programming style
+    #+CINDEX:programming style, applicative
+    #+CINDEX:style, applicative programming
+    #+CINDEX:lexical closures
+    #+CINDEX:closures, lexical
+    A more compelling argument is that there is a certain style of
+    applicative programming, making heavy use of lexical closures,
+    that can be expressed more elegantly in Scheme syntax.
+
+    #+CINDEX: Common Lisp, superior to Scheme, areas of
+    But there are also areas where Common Lisp is superior to Scheme,
+    such as
+      #+CINDEX:macros, user-defined
+      #+CINDEX:sequence datatype
+      #+CINDEX:datatype, sequence
+      #+CINDEX:unification of lists and vectors, sequence datatype
+      #+CINDEX:keyword arguments
+    - its support for user-defined macros,
+    - its elegant unification of lists and vectors into a sequence datatype, and
+    - its use of keyword arguments to greatly extend the utility of
+      the sequence functions.
+
+
+    #+CINDEX:Lisp, industrial strength language
+    The combination of tremendous power, extensive manufacturer
+    support, and a built-in object-oriented programming facility make
+    Common Lisp the only ``industrial strength'' Lisp.  Although this
+    book does emphasize a side-effect-free, applicative approach to
+    programming with which Scheme afficionados will feel quite at
+    home, it does so in purely Common Lisp style.
+
+** Two Recommended Resources
+
+   #+CINDEX:advanced topics
+   #+CINDEX:enrichment material
+   This book has been carefully designed to meet the needs of
+   beginning programmers and non-computer science students, but the
+   optional advanced topics sections at the end of each chapter
+   provide enough enrichment material to hold the interest of junior
+   and senior computer science majors.
+
+   #+CINDEX:undergraduates, advanced
+   #+CINDEX:advanced undergraduates
+   #+CINDEX:Steele, Guy L. Jr.
+   #+CINDEX:@cite{Common Lisp: The Language}
+   For advanced undergraduates,
+   - Guy L. Steele Jr.’s @@texinfo:@cite{@@Common Lisp: The
+     Language@@texinfo:}@@ (published by Digital Press) would be a
+     useful companion to the introduction provided here.
+
+
+   #+CINDEX:beginner programmers, reference for
+   #+CINDEX:Franz
+   #+CINDEX:@cite{Common Lisp: The Reference}
+   For beginners,
+   - @@texinfo:@cite{@@Common Lisp: The Reference@@texinfo:}@@, by
+     Franz, Inc. (published by Addison-Wesley) is a more suitable
+     reference work.
+
+* Concept Index
+  :PROPERTIES:
+  :INDEX:    cp
+  :END:
+* COPYING
+  :PROPERTIES:
+  :COPYING:  t
+  :END:
+
+  {{{title}}}---{{{subtitle}}} {{{break}}}
+  By {{{author}}} {{{break}}}
+  \copy {{{date}}}
+
+* DEFAULT EXPORT SETTINGS                                          :noexport:
+#+OPTIONS: ':nil *:t -:t ::t <:t H:3 \n:nil ^:t arch:headline
+#+OPTIONS: author:t broken-links:nil c:nil creator:nil
+#+OPTIONS: d:(not "LOGBOOK") date:t e:t email:nil f:t inline:t num:t
+#+OPTIONS: p:nil pri:nil prop:nil stat:t tags:t tasks:t tex:t
+#+OPTIONS: timestamp:t title:t toc:t todo:t |:t
+#+LANGUAGE: en
+#+SELECT_TAGS: export
+#+EXCLUDE_TAGS: noexport
+#+CREATOR: Emacs 26.1 (Org mode 9.1.14)
+* TEXINFO EXPORT SETTINGS                                          :noexport:
+#+TEXINFO_FILENAME:cl-gentleintro.info
+#+TEXINFO_CLASS: info
+#+TEXINFO_HEADER:
+#+TEXINFO_POST_HEADER:
+#+SUBAUTHOR:
+#+TEXINFO_DIR_CATEGORY:Lisp
+#+TEXINFO_DIR_TITLE:Common List Gentle Intro
+#+TEXINFO_DIR_DESC:Gentle introduction to symbolic computation
+#+TEXINFO_PRINTED_TITLE:Common Lisp
+* MACRO DEFINITIONS                                                :noexport:
+  #+MACRO: subtitle A Gentle Introduction to Symbolic Computation
+  #+MACRO: VERSION Version 0.0.1
+  #+MACRO: noindent @@texinfo:@noindent @@
+  #+MACRO: break @@texinfo:@*@@
+  #+MACRO: heading @@texinfo:@heading @@ $1
+  #+MACRO: subheading @@texinfo:@subheading @@ $1
