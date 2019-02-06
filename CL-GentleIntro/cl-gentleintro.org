@@ -493,6 +493,369 @@
      Franz, Inc. (published by Addison-Wesley) is a more suitable
      reference work.
 
+* Functions and Data
+
+** Introduction
+
+   #+CINDEX:functions
+   #+CINDEX:data
+   #+CINDEX:built-in functions
+   #+CINDEX:functions, built-in
+   #+CINDEX:function, arithmetic
+   #+CINDEX:arithmetic functions
+   #+CINDEX:predicate function
+   #+CINDEX:function, predicate
+   - overview of the notions of function and data; i.e.
+   - examples of several built-in Lisp functions
+   - arithmetic functions,
+   - an introduction to symbols, one of the key datatypes of Lisp, and
+   - predicates, which answer yes-or-no questions
+
+     #+CINDEX:result
+     If you’re new to programming, this chapter is designed specifically for
+     you.  We’ll start by explaining what *functions* and *data* are.  The term
+     {{{dfn(data)}}} means /information/, such as numbers, words, or lists of
+     things.  You can think of a {{{dfn(function)}}} as a /box through which
+     data flows/.  The function operates on the data in some way, and the
+     *result* is what flows out.
+
+     #+CINDEX:function, techniques for creating new
+     #+CINDEX:computer programming
+     After covering some of the built-in functions provided by Lisp, we will
+     learn how to put existing functions together to make new ones---the
+     essence of computer programming.  Several useful techniques for creating
+     new functions will then be presented.
+
+** Functions on Numbers
+
+   #+CINDEX:functions, arithmetic
+   #+CINDEX:addition, subtraction
+   #+CINDEX:multiplication, division
+   #+CINDEX:@code{+}
+   #+CINDEX:call, function
+   #+CINDEX:invoke, function
+   #+CINDEX:return, function call, invocation
+   Probably the most familiar functions are the simple arithmetic functions of
+   addition, subtraction, multiplication, and division.
+
+   The name of the function is {{{code(+)}}}.
+
+   From the programmer’s point of view: We *called* (or *invoked*) the function
+   {{{code(+)}}} on the inputs 2 and 3, and the function (returned* 5.
+
+   Here is a table of Lisp functions that do useful things with numbers:
+
+   #+NAME:tab:math-functions
+   #+CAPTION:Lisp Functions that do useful things with numbers
+   |----------+--------------------------------------------|
+   | Function | Description                                |
+   |----------+--------------------------------------------|
+   | ~+~      | Adds two numbers                           |
+   | ~-~      | Subtracts the second number from the first |
+   | ~*~      | Multiplies two numbers                     |
+   | ~/~      | Divides the first number by the second     |
+   | ~ABS~    | Absolute value of a number                 |
+   | ~SQRT~   | Square root of a number                    |
+   |----------+--------------------------------------------|
+
+** Three Kinds of Numbers
+
+   - integers
+   - floating points
+   - ratios
+
+   #+CINDEX:numbers
+   #+CINDEX:integers
+   #+CINDEX:whole numbers
+   In this book we will work mostly with *integers*, which are whole numbers.
+   Common Lisp provides many other kinds of numbers.  One kind you should know
+   about is *floating point* numbers.  A {{{dfn(floating point)}}} number is
+   always written with a decimal point; for example, the number five would be
+   written ~5.0~. The ~SQRT~ function generally returns a floating point number
+   as its result, even when its input is an integer.
+
+   #+CINDEX:ratios
+   #+CINDEX:simplify ratios
+   *Ratios* are yet another kind of number.  In Common Lisp we can also write
+   ~one-half~ as the ratio ~1/2~.  Common Lisp automatically simplifies ratios
+   to use the smallest possible denominator; for example, the ratios ~4/6~,
+   ~6/9~, and ~10/15~ would all be simplified to ~2/3~.
+
+   When we call an arithmetic function with integer inputs, Common Lisp will
+   usually produce an integer or ratio result.  If we use a mixture of integers
+   and floating point numbers, the result will be a floating point number:
+
+   #+TEXINFO:@noindent@code{(/ 3 6)} @result{} @code{1/2}@*
+   #+TEXINFO:@code{(/ 3 6.0)} @result{} @code{0.5}
+
+** Order of Inputs is Important
+
+   #+CINDEX:inputs, order
+   The order in which inputs are supplied to a function is important. For
+   example, dividing 8 by 2 is not the same as dividing 2 by 8.  When we divide
+   8 by 2 we get 4.  When we divide 2 by 8 we get the ratio 1/4.
+
+   Ratios need not always be less than 1.  For example:
+   #+TEXINFO:@code{(/ 10 8)} @result{} @code{5/4}
+
+** Symbols
+
+   #+CINDEX:symbols
+   #+CINDEX:data, symbol
+   *Symbols* are another type of data in Lisp.  Symbols are typically named
+   after English words (such as =TUESDAY=), or phrases (e.g.,
+   =BUFFALO-BREATH=), or common abbreviations (like ~SQRT~ for ‘‘square
+   root.’’).  Symbol names may contain practically any combination of letters
+   and numbers, plus some special characters such as hyphens.  Symbols may
+   include digits in their names, as in =R2D2=, but this does not make them
+   numbers.  It is important that you be able to tell the difference between
+   numbers---especially integers---and symbols. These definitions should help:
+
+   #+CINDEX:integer, definition
+   #+CINDEX:symbol, definition
+   - integer :: A sequence of digits =0= through =9=, optionally preceded by a
+                plus or minus sign.
+   - symbol :: Any sequence of letters, digits, and permissible special
+               characters that is not a number.
+
+
+   So =FOUR= is a symbol, ~4~ is an integer, ~+4~ is an integer, but =+= is a
+   symbol.  And =7-11= is also a symbol.
+
+** The Special Symbols =T= and =NIL=
+
+   #+CINDEX:@code{T}
+   #+CINDEX:@code{NIL}
+   #+CINDEX:Truth, @code{T}
+   #+CINDEX:Falsity, @code{NIL}
+   Two Lisp symbols have special meanings attached to them. They are:
+
+   - =T= :: Truth, ``yes''
+   - =NIL= :: Falsity, emptiness, ``no''
+
+
+   #+CINDEX:predicates, definition
+   Certain Lisp functions answer questions with =T= or =NIL=.  Such yes-or-no
+   functions are called *predicates*.
+
+** Some Simple Predicates
+
+   #+CINDEX:predicate function
+   #+CINDEX:question-answer function, predicate
+   #+CINDEX:@code{T}
+   #+CINDEX:@code{NIL}
+   A {{{dfn(predicate)}}} is a question-answering function.  Predicates output
+   the symbol =T= when they mean yes and the symbol =NIL= when they mean
+   no.
+
+   #+CINDEX:@code{NUMBERP}, predicate function
+   The first predicate we will study is the one that tests whether its input is
+   a number or not.  It is called ~NUMBERP~ (pronounced ``number-pee,'' as in
+   ``number predicate''), and it looks like this:
+
+   #+TEXINFO:@noindent@code{(NUMBERP 2)} @result{} T@*
+   #+TEXINFO:@code{(NUMBERP DOG)} @result{} NIL
+
+   #+CINDEX:@code{SYMBOLP}
+   Similarly, the ~SYMBOLP~ predicate tests whether its input is a
+   symbol.  ~SYMBOLP~ returns =T= when given an input that is a symbol; it returns
+   =NIL= for inputs that are not symbols.
+
+   #+TEXINFO:@noindent@code{(SYMBOLP CAT)} @result{} T@*
+   #+TEXINFO:@code{(SYMBOLP 42)} @result{} NIL
+
+   #+CINDEX:@code{ZEROP}
+   #+CINDEX:@code{EVENP}
+   #+CINDEX:@code{ODDP}
+   The ~ZEROP~, ~EVENP~, and ~ODDP~ predicates work only on numbers.  ~ZEROP~
+   returns =T= if its input is zero.  ~ODDP~ returns =T= if its input is odd;
+   otherwise it returns =NIL=.  ~EVENP~ does the reverse.
+
+   #+CINDEX:predicate, naming convention
+   By now you’ve caught on to the convention of tacking a ``P'' onto a function
+   name to show that it is a predicate.  Not all Lisp predicates obey this
+   rule, but most do.
+
+   #+CINDEX:@code{<}
+   #+CINDEX:@code{>}
+   Here are two more predicates: ~<~ returns =T= if its first input is less
+   than its second, while ~>~ returns =T= if its first input is greater than
+   its second.  (They are also our first exceptions to the convention that
+   predicate names end with a ``P.'')
+
+** The Equal Predicate
+
+   #+CINDEX:@code{EQUAL}
+   #+CINDEX:@code{EQ}
+   #+CINDEX:@code{EQL}
+   #+CINDEX:@code{EQUALP}
+   ~EQUAL~ is a predicate for comparing two things to see if they are the same.
+   ~EQUAL~ returns =T= if its two inputs are equal; otherwise it returns =NIL=.
+   Common Lisp also includes predicates named ~EQ~, ~EQL~, and ~EQUALP~ whose
+   behavior is slightly different than ~EQUAL~; the differences will not concern
+   us here.  For beginners, ~EQUAL~ is the right one to use.
+
+** Putting Functions Together
+
+   #+CINDEX:primitive functions
+   #+CINDEX:functions, primitive
+   #+CINDEX:built-in functions
+   #+CINDEX:functionsm, new
+   #+CINDEX:new functions
+   So far we’ve covered about a dozen of the many functions built into Common
+   Lisp.  These built-in functions are called *primitive functions*, or
+   *primitives*.  We make new functions by putting primitives together in
+   various ways.
+
+*** Defining ~ADD1~
+
+    #+CINDEX:@code{ADD1}
+    #+CINDEX:@code{+}
+    Let’s define a function that adds one to its input.[fn:add1] We already
+    have a primitive function for addition: The ~+~ function will add any two
+    numbers it is given as input. Our ~ADD1~ function will take a single number
+    as input, and add one to it.  Now that we’ve defined ~ADD1~ we can use it to
+    add 1 to any number we like.
+
+    #+TEXINFO:@noindent@code{(ADD1 5)} @result{} 6
+
+*** Defining ~ADD2~
+
+    #+CINDEX:@code{ADD2}
+    Now suppose we want a function that adds 2 to its input.  We could define
+    ~ADD2~ the same way we defined ~ADD1~.  But in Lisp there is always more
+    than one way to solve a problem; sometimes it is interesting to look at
+    alternative solutions. For example, we could build ~ADD2~ out of two ~ADD1~
+    boxes.
+
+    Once we’ve defined ~ADD2~, we are free to use it to add 2 to any number.
+    Looking at the ~ADD2~ box from the outside, we have no way of knowing which
+    solution was chosen.
+
+    #+TEXINFO:@noindent@code{(ADD2 5)} @result{} 7
+
+    #+CINDEX:primitive function
+    But if we look inside the ~ADD2~ box we can see exactly what’s going on.
+    The number 5 flows into the first ~ADD1~ box, which produces 6 as its
+    result.  The 6 then flows into the second ~ADD1~ box, and its result is 7.
+    If we want to peer deeper still, we could see the ~+~ box inside each
+    ~ADD1~ box.  This is as deep as we can go.  We can’t look inside the ~+~
+    boxes because ~+~ is a primitive function.
+
+*** Defining ~TWOP~
+
+    #+CINDEX:predicates, defining our own
+    We can use our new knowledge to make our own predicates too, since
+    predicates are just a special type of function.  Predicates are functions
+    that return a result of =T= or =NIL=.  The ~TWOP~ predicate defined below
+    returns =T= if its input is equal to 2.
+
+    #+TEXINFO:@noindent@code{(TWOP 2)} @result{} T
+    #+TEXINFO:@code{(TWOP 3)} @result{} NIL
+
+*** Defining ONEMOREP
+
+    #+CINDEX:@code{ONEMOREP} predicate
+    Let’s try defining a function of two inputs.  Here is the ~ONEMOREP~
+    predicate, which tests whether its first input is exactly one greater than
+    its second input.
+
+    Do you see how ~ONEMOREP~ works?  If the first input is one greater than
+    the second input, adding 1 to the second input should make the two equal.
+    In this case, the ~EQUAL~ predicate will return =T=.  On the other hand, if
+    the first input to ~ONEMOREP~ isn’t one greater than the second input, the
+    inputs to ~EQUAL~ won’t be equal, so it will return =NIL=.
+
+    In your mind (or out loud if you prefer), trace the flow of data through
+    ~ONEMOREP~ for the preceding example.  You should say something like this:
+
+    #+BEGIN_quote
+    The first input is a 7.  The second input, a 6, enters ~ADD1~, which
+    outputs a 7.  The two 7’s enter the ~EQUAL~ function, and since they are
+    equal, it outputs a =T=.  =T= is the result of ~ONEMOREP~.
+    #+END_quote
+
+** The ~NOT~ Predicate
+
+   #+CINDEX:@code{NOT}
+   ~NOT~ is the ``opposite'' predicate: It turns 'yes' into 'no', and 'no' into
+   'yes'.  In Lisp terminology, given an input of =T=, ~NOT~ returns =NIL=.
+   Given an input of =NIL=, ~NOT~ returns =T=.  The neat thing about ~NOT~ is
+   that it can be attached to any other predicate to derive its opposite; for
+   example, we can make a ``not equal'' predicate from ~NOT~ and ~EQUAL~, or a
+   ``nonzero'' predicate from ~NOT~ and ~ZEROP~.  We’ll see how this is done in
+   the next section.
+
+   #+CINDEX:Lisp @samp{no}
+   By convention, NIL is the only way to say ``no'' in Lisp.  Everything else
+   is treated as ``yes''.  So ~NOT~ returns =NIL= for every input except =NIL=.
+   This is not just an arbitrary convention.  It turns out to be extremely
+   useful to treat =NIL= as the only ``false'' object.  You’ll see why in later
+   chapters.
+
+** Negating a Predicate
+
+   #+CINDEX:@code{NOT-EQUAL}
+   Suppose we want to make a predicate that tests whether two things are not
+   equal---the opposite of the ~EQUAL~ predicate.  We can build it by starting
+   with ~EQUAL~ and running its output through ~NOT~ to get the opposite
+   result.  Because of the ~NOT~ function, whenever ~EQUAL~ would say =T=,
+   ~NOT-EQUAL~ will say =NIL=, and whenever ~EQUAL~ would say =NIL=,
+   ~NOT-EQUAL~ will say =T=.
+
+** Number of Inputs to a Function
+
+   Some functions require a fixed number of inputs, such as ~ODDP~, which
+   accepts exactly one input, and ~EQUAL~, which takes exactly two. But many
+   functions accept a variable number of inputs.  For example, the arithmetic
+   functions ~+~, ~-~, ~*~, and ~/~ will accept any number of inputs.
+
+   To multiply three numbers, the ~*~ function multiplies the first two, then
+   multiplies the result by the third.  When ~-~ or ~/~ is given more than two
+   inputs, the result is the first input diminished (or divided, respectively)
+   by the remaining inputs.
+
+   The ~-~ and ~/~ functions behave differently when given only one
+   input.  What ~-~ does is negate its input, in other words, it changes the sign
+   from positive to negative or vice versa by subtracting it from zero.  When
+   the ~/~ function is given a single input, it divides one by that input, which
+   gives the reciprocal.
+
+   The two-input case is clearly the defining case for the basic arithmetic
+   functions.  While they can accept more or fewer than two inputs, they convert
+   those cases to instances of the two-input case.
+
+** Errors
+
+   Even though our system of functions is a very simple one, we can already
+   make several types of errors in it. One error is to give a function the
+   wrong type of data.  For example, the ~+~ function can add only numbers; it
+   cannot add symbols.  Another error is to give a function too few or too many
+   inputs.  Finally, an error may occur because a function cannot do what is
+   requested of it.  This is what happens when we try to divide a number by
+   zero.
+
+** Summary
+
+   In this chapter we covered two types of data: numbers and symbols. We also
+   learned several built-in functions that operate on them.
+
+   Predicates are a special class of functions that use =T= and =NIL= to answer
+   questions about their inputs.  The symbol =NIL= means `false', and the
+   symbol =T= means `true'.  Actually, anything other than =NIL= is treated as
+   `true' in Lisp.
+
+   A function must have a definition before we can use it.  We can make new
+   functions by putting old ones together in various ways.  A particularly
+   useful combination, used quite often in programming, is to feed the output
+   of a predicate through the ~NOT~ function to derive its opposite, as the
+   ~NOT-EQUAL~ predicate was derived from ~EQUAL~.
+
+* List of Tables
+  :PROPERTIES:
+  :UNNUMBERED: t
+  :END:
+  #+TEXINFO: @listoffloats Table
 * Concept Index
   :PROPERTIES:
   :INDEX:    cp
@@ -528,8 +891,16 @@
 #+TEXINFO_PRINTED_TITLE:Common Lisp
 * MACRO DEFINITIONS                                                :noexport:
   #+MACRO: subtitle A Gentle Introduction to Symbolic Computation
-  #+MACRO: VERSION Version 0.0.1
+  #+MACRO: VERSION Version 0.0.2 <2019-02-06 Wed 02:22>
   #+MACRO: noindent @@texinfo:@noindent @@
   #+MACRO: break @@texinfo:@*@@
   #+MACRO: heading @@texinfo:@heading @@ $1
   #+MACRO: subheading @@texinfo:@subheading @@ $1
+  #+MACRO: dfn @@texinfo:@dfn{@@$1@@texinfo:}@@
+  #+MACRO: code @@texinfo:@code{@@$1@@texinfo:}@@
+  #+MACRO: result @@texinfo:@result{}@@
+* FOOTNOTES                                                        :noexport:
+[fn:add1]Note to instructors: Common Lisp contains built-in functions 1+ and 1-
+that add 1 to or subtract 1 from their input, respectively. But since these
+unusual names are almost certain to confuse beginning programmers, I will not
+refer to them in this book.
