@@ -1169,23 +1169,190 @@ of NIL to be NIL has useful consequences in certain programming situations.
 
 ** CONS
 
+#+CINDEX:CONS function
+#+CINDEX:cons cells, from CONS
+The CONS function creates cons cells.  It takes two inputs and returns a
+pointer to a new cons cell whose CAR points to the first input and whose CDR
+points to the second. The term ``CONS'' is short for CONStruct.
+
+If we try to explain CONS using parenthesis notation, we might say that CONS
+adds an element to the front of a list.
+
+To really understand what CONS does, it is better to think about it using cons
+cell notation. CONS is a very simple function: It doesn’t know anything about
+the ``front of a list.'' (Remember, inside the computer there are no
+parentheses.) All CONS does is create one new cons cell. But if the second
+input to CONS is a cons cell chain of length ~n~, the new cell will form the
+head of a cons cell chain of length ~n+1~.  So even though CONS just returns a
+pointer to the cell it created, in effect it returns a cons cell chain one
+longer than its second input.
+
 *** CONS and the Empty List
+
+#+CINDEX:Empty list, NIL
+#+CINDEX:NIL, empty list
+#+CINDEX:CONS NIL
+Since NIL is the empty list, if we use CONS to add something onto NIL we get a
+list of one element.
+
+You should be able to confirm this result by looking at the cons cell notation
+for the list (FROB). The CAR of (FROB) is the symbol FROB and the CDR of (FROB)
+is NIL, so CONS must have built the list from the inputs FROB and NIL.
+
+In printed notation, consing something onto NIL is equivalent to throwing an
+extra pair of parentheses around it.
+- CONS(SOMETHING NIL) @@texinfo:@result{}@@ (SOMETHING)
 
 *** Building Nested Lists With CONS
 
+#+CINDEX:nested lists, built with CONS function
+Any time the first input to CONS is a nonempty list, the result will be a
+nested list, that is, a list with more than one level of cons cells.
+
 *** CONS Can Build Lists From Scratch
+
+#+CINDEX:lists from scratch, using CONS function
+Suppose we wish to construct the list (FOO BAR BAZ) from scratch. We could
+start by adding the symbol BAZ onto the empty list. This gives us the list
+(BAZ).  Then we can add BAR onto that.  Finally we add the FOO.  We have
+cascaded three CONSs together to build the list (FOO BAR BAZ) from scratch.
 
 ** SYMMETRY OF CONS AND CAR/CDR
 
+#+CINDEX:symmetry, CONS and CAR/CDR
+There is an interesting symmetry between CONS and CAR/CDR. Given some list x,
+if we know the CAR of x and the CDR of x we can CONS them together to figure
+out what x is. For example, if the CAR of x is the symbol A and the CDR of x is
+the list (E I O U), we know that x must be the list (A E I O U).
+
+The symmetry between CONS and CAR/CDR can be expressed formally as:
+: x = CONS of (CAR of x) and (CDR of x)
+
+However, this relationship only holds for nonempty lists.
+
 ** LIST
+
+#+CINDEX:LIST function
+Creating a list from a bunch of elements is such a common operation that Lisp
+has a built-in function to do just that. The LIST function takes any number of
+inputs and makes a list of them. That is, it makes a new cons cell chain,
+ending in NIL, with as many cells as there are inputs.  The LIST function, on
+the other hand, makes an entirely new cons cell chain.  In parenthesis
+notation, it appears to throw a pair of parentheses around its inputs, however
+many there are. The result of LIST always has one more level of
+parenthesization than any input had.
+
+LIST actually works by building a new chain of cons cells. The CAR halves of
+the cells point to the inputs LIST received. The result of LIST is a pointer to
+the first cell in the chain.
+
+Let’s look again at the difference between CONS and LIST. CONS makes a single
+cons cell. LIST makes a new cons cell chain list out of however many inputs it
+receives.  Another way to understand LIST is to think of it as expanding into a
+cascade of CONS boxes.
 
 ** REPLACING THE FIRST ELEMENT OF A LIST
 
+Suppose we want to replace the first element of a list with the symbol
+WHAT. The REST function can be used to obtain the sublist beyond the first
+element; then we can use CONS to add the symbol WHAT to the front of that
+sublist.
+
 ** LIST PREDICATES
+
+#+CINDEX:predicates, list
+#+CINDEX:list predicates
+#+CINDEX:LISTP predicate
+The LISTP predicate returns T if its input is a list. LISTP returns NIL for
+non-lists.
+
+#+CINDEX:CONSP predicate
+The CONSP predicate returns T if its input is a cons cell. CONSP is almost the
+same as LISTP; the difference is in their treatment of NIL. NIL is a list, but
+it is not a cons cell.
+
+#+CINDEX:ATOM predicate
+The ATOM predicate returns T if its input is anything other than a cons
+cell. ATOM and CONSP are opposites; when one returns T, the other always
+returns NIL.
+
+#+CINDEX:atom
+The word ``atom'' comes from the Greek /atomos/, meaning indivisible. Numbers
+and symbols are atomic because they cannot be taken apart. Nonempty lists
+aren’t atomic: FIRST and REST take them apart.
+
+#+CINDEX:NULL predicate
+The NULL predicate returns T if its input is NIL. Its behavior is the same as
+the NOT predicate. By convention, Lisp programmers reserve NOT for logical
+operations: changing /true/ to /false/ and /false/ to /true/. They use NULL
+when they want to test whether a list is empty.
 
 ** SUMMARY
 
+This chapter introduced the most versatile data type in Lisp: lists.
+
+- Lists have both a printed and an internal representation.
+
+- They may contain numbers, symbols, or other lists as elements.
+
+- We can take lists apart using CAR and CDR (``first'' and ``rest'') and put
+  them together with CONS or LIST.
+
+- The LENGTH function counts the number of elements in a list, which is the
+  same as its number of top-level cons cells.
+
+
+The important points about CAR and CDR are:
+
+- CAR and CDR accept only lists as input.
+
+- FIRST and REST are the same as CAR and CDR.
+
+- SECOND and THIRD are the same as CADR and CADDR.
+
+- Common Lisp provides built-in C...R functions for all combinations of CAR and
+  CDR up to and including four As and Ds.
+
+
+The symbol NIL has several interesting properties:
+
+- NIL is a symbol. It is the only way to say ‘‘no’’ or ‘‘false’’ in Lisp.
+
+- NIL is a list. It is the empty list; its LENGTH is zero.
+
+- NIL is the only Lisp object that is both a symbol and a list.
+
+- NIL marks the end of a cons cell chain. When lists are printed in parenthesis
+  notation, the NILs at the end of chains are omitted by convention.
+
+- NIL and () are interchangeable notations for the same object.
+
+- The CAR and CDR of NIL are defined to be NIL.
+
 ** FUNCTIONS COVERED IN THIS CHAPTER
+
+List functions:
+
+- FIRST
+- SECOND
+- THIRD
+- FOURTH
+- REST
+- CAR
+- CDR
+- CONS
+- LIST
+- LENGTH
+
+
+Compositions of CAR and CDR: CADR, CADDR, and so on.
+
+Predicates:
+
+- LISTP
+- CONSP
+- ATOM
+- NULL
 
 * List of Tables
   :PROPERTIES:
@@ -1227,7 +1394,7 @@ of NIL to be NIL has useful consequences in certain programming situations.
 #+TEXINFO_PRINTED_TITLE:Common Lisp
 * MACRO DEFINITIONS                                                :noexport:
   #+MACRO: subtitle A Gentle Introduction to Symbolic Computation
-  #+MACRO: VERSION Version 0.0.4 <2019-02-18 Mon 09:44>
+  #+MACRO: VERSION Version 0.0.5 <2019-02-18 Mon 10:10>
   #+MACRO: noindent @@texinfo:@noindent @@
   #+MACRO: break @@texinfo:@*@@
   #+MACRO: heading @@texinfo:@heading @@ $1
