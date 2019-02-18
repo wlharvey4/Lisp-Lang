@@ -960,19 +960,212 @@ is both a symbol and a list.
 
 ** EQUALITY OF LISTS
 
+#+CINDEX:EQUAL
+Two lists are considered EQUAL if their corresponding elements are EQUAL.  If
+two lists have different numbers of elements, they are never EQUAL.
+
 ** FIRST SECOND THIRD AND REST
+
+#+CINDEX:FIRST
+#+CINDEX:SECOND
+#+CINDEX:THIRD
+Lisp provides primitive functions for extracting elements from a list. The
+functions FIRST, SECOND, and THIRD return the first, second, and third element
+of their input, respectively.  It is an error to give these functions inputs
+that are not lists.
+
+#+CINDEX:REST
+The REST function is the complement of FIRST: It returns a list containing
+everything but the first element.
 
 ** FUNCTIONS OPERATE ON POINTERS
 
+#+CINDEX:pointers
+When we say that an object such as a list or symbol is an input to a function,
+we are speaking informally. Inside the computer, everything is done with
+pointers, so the real input to the function isn’t the object itself, but a
+pointer to the object. Likewise, the result returned by a function is really a
+pointer.
+
+
+Suppose (THE BIG BOPPER) is supplied as input to REST. What REST actually
+receives is a pointer to the first cons cell.  Computer scientists would say
+that the pointer lives ``in a register'' or ``on the stack,'' but these details
+need not concern us.
+
+The result returned by REST is a pointer to the second cons cell, which is the
+first cell of the list (BIG BOPPER).  Where did this pointer come from? What
+REST did was extract the pointer from the right half of the first cons cell,
+and return that pointer as its result. So the result of REST is a pointer into
+the same cons cell chain as the input to REST.  No new cons cells were created
+by REST when it returned (BIG BOPPER); all it did was extract and return a
+pointer.
+
 ** CAR AND CDR
+
+#+CINDEX:CAR
+#+CINDEX:address portion of register
+#+CINDEX:Contents of Address portion
+#+CINDEX:CDR
+#+CINDEX:decrement portion of Register
+#+CINDEX:Contents of Decrement portion of Register
+#+CINDEX:IBM 704
+By now you know that each half of a cons cell points to something. The two
+halves have obscure names. The left half is called the CAR, and the right half
+is called the CDR (pronounced ``cou-der,'' rhymes with ``good-er''). These
+names are relics from the early days of computing, when Lisp first ran on a
+machine called the IBM 704. The 704 was so primitive it didn’t even have
+transistors---it used vacuum tubes. Each of its ``registers'' was divided into
+several components, two of which were the address portion and the decrement
+portion.  Back then, the name CAR stood for Contents of Address portion of
+Register, and CDR stood for Contents of Decrement portion of Register.  Even
+though these terms don’t apply to modern computer hardware, Common Lisp still
+uses the acronyms CAR and CDR when referring to cons cells, partly for
+historical reasons, and partly because these names can be composed to form
+longer names such as CADR and CDDAR, as you will see shortly.
+
+#+CINDEX:CAR function
+#+CINDEX:CDR function
+Besides naming the two halves of a cons cell, CAR and CDR are also the names of
+built-in Lisp functions that return whatever pointer is in the CAR or CDR half
+of the cell, respectively.  Consider again the list (THE BIG BOPPER). When this
+list is used as input to a function such as CAR, what the function actually
+receives is not the list itself, but rather a pointer to the first cons cell.
+CAR follows this pointer to get to the actual cons cell and extracts the
+pointer sitting in the CAR half. So CAR returns as its result a pointer to the
+symbol THE.  What does CDR return when given the same list as input?
+
+CDR follows the pointer to get to the cons cell, and extracts the pointer
+sitting in the CDR half, which it returns. So the result of CDR is a pointer to
+the list (BIG BOPPER).
+
+#+CINDEX:FIRST is CAR
+#+CINDEX:REST is CDR
+From this example you can see that CAR is the same as FIRST, and CDR is the
+same as REST.  Lisp programmers usually prefer to express it the other way
+around: FIRST returns the CAR of a list, and REST returns the CDR.
 
 *** The CDR of a Single-Element List
 
+#+CINDEX:list of length one
+#+CINDEX:list of zero length, NIL
+#+CINDEX:NIL, list of zero length
+Since a list of length one is represented inside the computer as a single cons
+cell, the CDR of a list of length one is the list of length zero, NIL.
+
+The list ((PHONE HOME)) has only one element.  Since the CAR and CDR functions
+extract their respective pointers from the first cons cell of a list, the CAR
+of ((PHONE HOME)) is (PHONE HOME), and the CDR is NIL.
+
 *** Combinations of CAR and CDR
+
+Consider the list (FEE FIE FOE FUM), the first element of which is FEE. The
+second element of this list is the FIRST of the REST, or, in our new
+terminology, the CAR of the CDR.
+
+#+CINDEX:CADR function
+If you read the names of these function boxes from left to right, you’ll read
+``CDR'' and then ``CAR.'' But since the input to the CAR function is the output
+of the CDR function, we say in English that we are computing ``the CAR of the
+CDR'' of the list, not the other way around. In Lisp, the CADR function is an
+abbreviation for ``the CAR of the CDR.'' CADR is pronounced ``kae-der.''
+
+#+CINDEX:CDAR function
+What would happen if we switched the A and the D? The CDAR (``cou-dar'')
+function takes the CDR of the CAR of a list. The CAR of (FEE FIE FOE FUM) is
+FEE; if we try to take the CDR of that we get an error message. Obviously, CDAR
+doesn’t work on lists of symbols. It works perfectly well on lists of lists,
+though.
+
+#+CINDEX:CADDR function
+The CADDR (``ka-dih-der'') function returns the THIRD element of a list. (If
+you’re having trouble with these strange names, see the pronunciation guide on
+page 48.) Once again, the name indicates how the function works: It takes the
+CAR of the CDR of the CDR of the list.
+
+#+CINDEX:CADDR
+To really understand how CADDR works, you have to read the As and Ds from right
+to left. Starting with the list (FEE FIE FOE FUM), first take the CDR, yielding
+(FIE FOE FUM). Then take the CDR of that, which gives (FOE FUM). Finally take
+the CAR, which produces FOE.
+
+Here’s another way to look at CADDR. Start with the CDDR (``cou-dih-der'')
+function, which takes the CDR of the CDR, or the REST of the REST. The CDDR of
+(FEE FIE FOE FUM) is (FOE FUM), and the CAR of that is FOE. The CAR of the CDDR
+is the CADDR!
+
+#+CINDEX:CAADDR
+#+CINDEX:FIRST through TENTH
+#+CINDEX:TENTH, from FIRST
+Common Lisp provides built-in definitions for all combinations of CAR and CDR
+up to and including four As and Ds in the function name. So CAADDR is built in,
+but not CAADDAR. Common Lisp also provides built-in definitions for FIRST
+through TENTH.
 
 *** CAR and CDR of Nested Lists
 
+#+CINDEX:CAAR function
+CAR and CDR can be used to take apart nested lists just as easily as flat ones.
+Let’s see how we can get at the various components of the nested list ((BLUE
+CUBE) (RED PYRAMID)).  The CAR of this list is (BLUE CUBE). To get to BLUE, we
+must take the CAR of the CAR. The CAAR function, pronounced ``ka-ar.''
+
+#+CINDEX:CADAR function
+What about getting to the symbol CUBE? Put your finger on the first cons cell
+of the list. Following the CAR pointer from the first cell takes us to the list
+(BLUE CUBE). Following the CDR pointer from that cell takes us to the list
+(CUBE), and following the CAR pointer from there takes us to the symbol
+CUBE. So CUBE is the CAR of the CDR of the CAR of the list, or, in short, the
+CADAR (``ka-dar'').
+
+Here’s another way to think about it. The first element of the nested list is
+(BLUE CUBE), so CUBE is the SECOND of the FIRST of the list. This is the CADR
+of the CAR, which is precisely the CADAR.
+
+#+CINDEX:CAADR function
+Now let’s try to get to the symbol RED. RED is the FIRST of the SECOND of the
+list. You know by now that this is the CAR of the CADR. Putting the two names
+together yields CAADR, which is pronounced ``ka-ae-der.''
+
+Let’s build a table of the steps to follow to get to PYRAMID:
+
+| STEP    | RESULT                      |
+|---------+-----------------------------|
+| /start/ | ((BLUE CUBE) (RED PYRAMID)) |
+| C...DR  | ((RED PYRAMID))             |
+| C..ADR  | (RED PYRAMID)               |
+| C.DADR  | (PYRAMID)                   |
+| CADADR  | PYRAMID                     |
+|---------+-----------------------------|
+
+#+NAME:tbl:car-cdr-pro-guide
+#+CAPTION:CAR/CDR Pronunciation Guide
+| FUNCTION | PRONUNCIATION     | ALTERNATE NAME |
+|----------+-------------------+----------------|
+| CAR      | /kar/             | FIRST          |
+| CDR      | /cou-der/         | REST           |
+| CAAR     | /ka-ar/           |                |
+| CADR     | /kae-der/         | SECOND         |
+| CDAR     | /cou-dar/         |                |
+| CDDR     | /cou-dih-der/     |                |
+| CAAAR    | /ka-a-ar/         |                |
+| CAADR    | /ka-ae-der/       |                |
+| CADAR    | /ka-dar/          |                |
+| CADDR    | /ka-dih-der/      | THIRD          |
+| CDAAR    | /cou-da-ar/       |                |
+| CDADR    | /cou-dae-der/     |                |
+| CDDAR    | /cou-dih-dar/     |                |
+| CDDDR    | /cou-did-dih-der/ |                |
+| CADDDR   | /ka-dih-dih-der/  | FOURTH         |
+|----------+-------------------+----------------|
+
 *** CAR and CDR of NIL
+
+#+CINDEX:NIL, CAR and CDR
+Here is another interesting fact about NIL: The CAR and CDR of NIL are defined
+to be NIL.  In some earlier Lisp dialects it was actually an error to try to
+take the CAR or CDR of NIL. But experience shows that defining the CAR and CDR
+of NIL to be NIL has useful consequences in certain programming situations.
 
 ** CONS
 
@@ -1034,7 +1227,7 @@ is both a symbol and a list.
 #+TEXINFO_PRINTED_TITLE:Common Lisp
 * MACRO DEFINITIONS                                                :noexport:
   #+MACRO: subtitle A Gentle Introduction to Symbolic Computation
-  #+MACRO: VERSION Version 0.0.3 <2019-02-17 Sun 22:12>
+  #+MACRO: VERSION Version 0.0.4 <2019-02-18 Mon 09:44>
   #+MACRO: noindent @@texinfo:@noindent @@
   #+MACRO: break @@texinfo:@*@@
   #+MACRO: heading @@texinfo:@heading @@ $1
