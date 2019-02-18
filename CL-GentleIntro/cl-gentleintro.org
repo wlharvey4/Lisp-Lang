@@ -851,6 +851,149 @@
    of a predicate through the ~NOT~ function to derive its opposite, as the
    ~NOT-EQUAL~ predicate was derived from ~EQUAL~.
 
+* Lists
+
+** LISTS ARE THE MOST VERSATILE DATA TYPE
+
+#+CINDEX:List Processor
+``Lisp'' is an acronym for ``List Processor.''  Lists remain its central data
+type.  Lists are important because they can be made to represent practically
+anything: sets, tables, and graphs, and even English sentences.  Functions can
+also be represented as lists.
+
+** WHAT DO LISTS LOOK LIKE?
+
+Every list has two forms:
+
+#+CINDEX:printed representation, list
+#+CINDEX:element of a list
+- *a printed representation*; the printed representation is most convenient for
+  people to use, because it’s compact and easy to type on a computer keyboard.
+  We will use a /graphical notation/ when we want to refer to lists in their
+  internal form.  In its printed form, a list is a bunch of items enclosed in
+  parentheses. These items are called the {{{dfn(elements)}}} of the list.
+
+  #+CINDEX:internal representation, list
+  #+CINDEX:cons cell
+  #+CINDEX:pointer
+  #+CINDEX:NIL
+- *an internal one*; the internal representation is the way the list actually
+  exists in the computer’s memory.  Inside the computer’s memory, lists are
+  organized as chains of {{{dfn(cons cells)}}}, which we’ll draw as boxes. The
+  cons cells are linked together by {{{dfn(pointers)}}}, which we’ll draw as
+  arrows.  Each cons cell has two pointers. One of them always points to an
+  element of the list, such as RED, while the other points to the next cons
+  cell in the chain.  The cons cell chain ends in NIL. This is a convention in
+  Lisp. It may be violated in some circumstances, but most of the time lists
+  will end in NIL.
+
+  What each cons cell actually is, internally, is a small piece of memory,
+  split in two, big enough to hold two addresses (pointers) to other places in
+  memory where the actual data (like RED, or NIL, or another cons cell) is
+  stored. On most computers pointers are four bytes long, so each cons cells is
+  eight bytes.
+
+** LISTS OF ONE ELEMENT
+
+#+CINDEX:symbol, not a list of one
+A symbol and a list of one element are not the same.
+
+Consider the list (AARDVARK); it is represented by a cons cell.  One of the
+cons cell’s pointers points to the symbol AARDVARK; the other points to NIL.
+So you see that the list (AARDVARK) and the symbol AARDVARK are different
+objects.  The former is a cons cell that points to the latter.
+
+** NESTED LISTS
+
+#+CINDEX:nested list
+#+CINDEX:flat list
+A list may contain other lists as elements.
+
+- ((BLUE SKY) (GREEN GRASS) (BROWN EARTH))
+- This is a list of /three lists/, not a list of six symbols.
+- Lists that contain other lists are called {{{dfn(nested lists)}}}.  Lists
+  that are not nested are called {{{dfn(flat lists)}}}.  A flat list has only a
+  top-level cons cell chain.
+- In parenthesis notation, a nested list has one or more sets of parentheses
+  nested within the outermost pair.
+- In cons cell notation, a nested list has at least one level of cons cells
+  below the top-level chain.
+
+
+Lists aren’t always uniform in shape.  Here’s a nested list whose elements are
+a list, a symbol, and a list:
+
+- ((BRAIN SURGEONS) NEVER (SAY OOPS))
+
+
+Anything we write in parenthesis notation will have an equivalent description
+inside the computer as a cons cell structure---if the parentheses balance
+properly.
+
+** LENGTH OF LISTS
+
+#+CINDEX:length of list
+The length of a list is the number of elements it has.  But what about lists of
+lists? When a list is written in parenthesis notation, its elements are the
+things that appear inside only one level of parentheses.
+
+#+CINDEX:LENGTH, primitive function
+The primitive function LENGTH computes the length of a list. It is an error to
+give LENGTH a symbol or number as input.
+
+** NIL---THE EMPTY LIST
+
+#+CINDEX:empty list
+A list of zero elements is called an {{{dfn(empty list)}}}. It has no cons
+cells. It is written as an empty pair of parentheses:
+
+=()=
+
+#+CINDEX:NIL
+Inside the computer the empty list is represented by the symbol NIL.
+
+Thus ~(A NIL B)~ can also be written ~(A () B)~.
+
+The length of the empty list is zero. Even though NIL is a symbol, it is still
+a valid input to LENGTH because NIL is also a list. NIL is the only thing that
+is both a symbol and a list.
+
+** EQUALITY OF LISTS
+
+** FIRST SECOND THIRD AND REST
+
+** FUNCTIONS OPERATE ON POINTERS
+
+** CAR AND CDR
+
+*** The CDR of a Single-Element List
+
+*** Combinations of CAR and CDR
+
+*** CAR and CDR of Nested Lists
+
+*** CAR and CDR of NIL
+
+** CONS
+
+*** CONS and the Empty List
+
+*** Building Nested Lists With CONS
+
+*** CONS Can Build Lists From Scratch
+
+** SYMMETRY OF CONS AND CAR/CDR
+
+** LIST
+
+** REPLACING THE FIRST ELEMENT OF A LIST
+
+** LIST PREDICATES
+
+** SUMMARY
+
+** FUNCTIONS COVERED IN THIS CHAPTER
+
 * List of Tables
   :PROPERTIES:
   :UNNUMBERED: t
@@ -891,7 +1034,7 @@
 #+TEXINFO_PRINTED_TITLE:Common Lisp
 * MACRO DEFINITIONS                                                :noexport:
   #+MACRO: subtitle A Gentle Introduction to Symbolic Computation
-  #+MACRO: VERSION Version 0.0.2 <2019-02-06 Wed 02:22>
+  #+MACRO: VERSION Version 0.0.3 <2019-02-17 Sun 22:12>
   #+MACRO: noindent @@texinfo:@noindent @@
   #+MACRO: break @@texinfo:@*@@
   #+MACRO: heading @@texinfo:@heading @@ $1
