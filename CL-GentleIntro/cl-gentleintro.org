@@ -1354,6 +1354,198 @@ Predicates:
 - ATOM
 - NULL
 
+* EVAL Notation
+
+** INTRODUCTION TO EVAL NOTATION
+
+#+CINDEX:EVAL notation
+#+CINDEX:notation, EVAL
+Before progressing further in our study of Lisp, we must switch to a more
+flexible notation, called EVAL notation.  Instead of using boxes to represent
+functions, we will use lists.
+
+#+CINDEX:EVAL notation, advantages
+EVAL notation has several advantages:
+
+- Programming concepts that are too sophisticated to express in box notation
+  can be expressed in EVAL notation.
+- EVAL notation is easy to type on a computer keyboard; box notation is not.
+  #+CINDEX:functions as lists
+- From a mathematical standpoint, representing functions as ordinary lists is
+  an elegant thing to do, because then we can use exactly the same notation for
+  functions as for data.
+  #+CINDEX:functions are data
+- In Lisp, functions are data, and EVAL notation allows us to write functions
+  that accept other functions as inputs.[fn:1]
+- When you have mastered EVAL notation, you will know most of what you need to
+  begin conversing in Lisp with a computer.
+
+** THE EVAL FUNCTION
+
+#+CINDEX:EVAL function
+#+CINDEX:evaluate Lisp expressions
+#+CINDEX:expression, function followed by inputs
+The EVAL function is the heart of Lisp.  EVAL’s job is to evaluate Lisp
+*expressions* to compute their result.  Most expressions consist of a function
+followed by a set of inputs.
+
+#+BEGIN_cartouche
+If we give EVAL the expression ~(+ 2 3)~, for example, it will invoke the
+built-in function ~+~ on the inputs 2 and 3, and ~+~ will return 5.  We
+therefore say the expression ~(+ 2 3)~ *evaluates* to 5.
+#+END_cartouche
+
+: (+ 2 3) --> [ EVAL ] ==> 5
+
+#+CINDEX:arrow
+From now on, instead of drawing an EVAL box we’ll just use an arrow. The
+preceding example will be written like this:
+
+#+TEXINFO: @code{(+ 2 3)} @result{} 5
+
+#+CINDEX:arrow, two-headed
+When we want to be slightly more verbose, we’ll use a two-headed arrow:
+
+#+BEGIN_EXAMPLE
+|--> (+ 2 3)
+|
+|--> 5
+#+END_EXAMPLE
+
+#+CINDEX:arrow, three-headed
+And when we want to show as much detail as possible, we will use a three-
+headed arrow, like this:
+
+#+BEGIN_EXAMPLE
+|--> (+ 2 3)
+|
+||==> Enter + with inputs 2 and 3
+||
+||==> Result of + is 5
+#+END_EXAMPLE
+
+#+CINDEX:expressions, EVAL notation
+Here are some more examples of expressions in EVAL notation:
+
+#+BEGIN_EXPORT texinfo
+@example
+(+ 1 6) @result{} 7
+(oddp (+ 1 6)) @result{} t
+(* 3 (+ 1 6)) @result{} 21
+(/ (* 2 11) (+ 1 6)) @result{} 22/7
+@end example
+#+END_EXPORT
+
+** EVAL NOTATION CAN DO ANYTHING BOX NOTATION CAN DO
+
+It should be obvious that any expression we write in box notation can also be
+written in EVAL notation.
+
+** EVALUATION RULES DEFINE THE BEHAVIOR OF EVAL
+
+#+CINDEX:evaluation rules
+#+CINDEX:rules, evaluation
+EVAL works by following a set of evaluation rules.
+
+- One rule is that numbers and certain other objects are ``self-evaluating,''
+  meaning they evaluate to themselves.  The special symbols ~T~ and ~NIL~ also
+  evaluate to themselves.
+
+  #+BEGIN_EXPORT texinfo
+  @example
+  23 @result{} 23
+  t @result{} t
+  nil @result{} nil
+  @end example
+  #+END_EXPORT
+
+#+CINDEX:evaluation rule for numbers, t, nil
+#+BEGIN_cartouche
+ {{{noindent}}} *Evaluation Rule for Numbers, T, and NIL:* /Numbers, and the
+ symbols T and NIL, evaluate to themselves./
+#+END_cartouche
+
+#+CINDEX:evaluate lists
+- There is also a rule for evaluating lists.
+
+  The first element of a list specifies a function to call; the remaining
+  elements are the unevaluated *arguments* to the function. These arguments
+  must be evaluated, in left to right order, to determine the inputs to the
+  function.
+
+#+CINDEX:evaluation rule for lists
+#+BEGIN_cartouche
+{{{noindent}}} *Evaluation Rule for Lists:* /The first element of the list
+specifies a function to be called. The remaining elements specify arguments to/
+/the function.  The function is called on the evaluated arguments./
+#+END_cartouche
+
+#+CINDEX:evaltrace diagram
+The following diagram, called an {{{dfn(evaltrace diagram)}}}, shows how the
+evaluation of ~(ODDP (+ 1 6))~ takes place.  Notice that evaluation proceeds
+from the inner nested expression, ~(+ 1 6)~, to the outer expression,
+ODDP. This inner-to-outer quality is reflected in the shape of the evaltrace
+diagram.
+
+** DEFINING FUNCTIONS IN EVAL NOTATION
+
+#+CINDEX:define functions in EVAL notation
+#+CINDEX:EVAL notation, define functions
+In EVAL notation we use lists to define functions, and we refer to the
+function’s arguments by giving them names.
+
+The AVERAGE function is defined in EVAL notation this way:
+
+#+BEGIN_EXAMPLE
+(defun average (x y)
+  (/ (+ x y) 2.0))
+#+END_EXAMPLE
+
+#+CINDEX:macro function
+#+CINDEX:defun macro function
+DEFUN is a special kind of function, called a {{{dfn(macro function)}}}, that
+does not evaluate its arguments.  Therefore they do not have to be quoted.
+
+DEFUN[fn:2] is used to define other functions.
+
+- The first input to DEFUN is the name of the function being defined.
+  #+CINDEX:argument list to defun
+  #+CINDEX:defun argument list
+- The second input is the {{{dfn(argument list)}}}: It specifies the names the
+  function will use to refer to its arguments.
+  #+CINDEX:body of defun
+  #+CINDEX:defun body
+- The remaining inputs to DEFUN define the {{{dfn(body)}}} of the function:
+  what goes on ``inside the box.''
+
+
+#+CINDEX:call a function
+Once you’ve typed the function definition for AVERAGE into the computer, you
+can call AVERAGE using EVAL notation.  When you type ~(AVERAGE 6 8)~, for
+example, AVERAGE uses 6 as the value for X and 8 as the value for Y. The
+result, naturally, is 7.0.
+
+Here is another example of function definition with DEFUN:
+
+: (defun square (n) (* n n))
+
+The function’s name is SQUARE.  Its argument list is ~(N)~, meaning it accepts
+one argument which it refers to as ~N~.  The body of the function is the
+expression ~(* N N)~.  The right way to read this definition aloud (or in your
+head) is: ``DEFUN SQUARE of N, times N N.''
+
+#+CINDEX:argument to function, symbol
+Almost any symbol except T or NIL can serve as the name of an argument. X, Y,
+and N are commonly used, but BOZO or ARTICHOKE would also work. Functions are
+more readable when their argument names mean something. A function that
+computed the total cost of a merchandise order might name its arguments
+QUANTITY, PRICE, and HANDLING-CHARGE.
+
+#+BEGIN_EXAMPLE
+(defun total-cost (quantity price handling-charge)
+    (+ (* quantity price) handling-charge))
+#+END_EXAMPLE
+
 * List of Tables
   :PROPERTIES:
   :UNNUMBERED: t
@@ -1394,7 +1586,7 @@ Predicates:
 #+TEXINFO_PRINTED_TITLE:Common Lisp
 * MACRO DEFINITIONS                                                :noexport:
   #+MACRO: subtitle A Gentle Introduction to Symbolic Computation
-  #+MACRO: VERSION Version 0.0.5 <2019-02-18 Mon 10:10>
+  #+MACRO: VERSION Version 0.0.6 <2019-02-20 Wed 02:46>
   #+MACRO: noindent @@texinfo:@noindent @@
   #+MACRO: break @@texinfo:@*@@
   #+MACRO: heading @@texinfo:@heading @@ $1
@@ -1407,3 +1599,9 @@ Predicates:
 that add 1 to or subtract 1 from their input, respectively. But since these
 unusual names are almost certain to confuse beginning programmers, I will not
 refer to them in this book.
+
+* Footnotes
+
+[fn:2] DEFUN stands for define function.
+
+[fn:1] We’ll explore this possibility further in chapter 7.
