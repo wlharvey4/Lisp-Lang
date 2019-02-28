@@ -1759,7 +1759,260 @@ function error:
 : (intro ’stanley ’livingstone)
 :     ⇒ Error! X undefined function.
 
+** MORE ABOUT VARIABLES
 
+#+CINDEX:create variables automatically, in function
+#+CINDEX:variables, automatic creation in functions
+#+CINDEX:functions, create variables automatically
+In Lisp, a function creates variables automatically when it is is invoked; they
+(usually) go away when the function returns.  Consider the DOUBLE function,
+which creates a variable named N every time we call it:
+: (defun double (n) (* n 2))
+
+#+CINDEX:global variables
+Outside of DOUBLE, the symbol N refers to the /global/ variable named N. The
+global variable N has not been assigned any value, so evaluating N results in
+an error.
+: n ⇒ Error! N unassigned variable.
+
+Now let’s try an example with two variables. Here is a definition for QUADRUPLE
+in terms of DOUBLE:
+: (defun quadruple (n) (double (double n)))
+
+Both DOUBLE and QUADRUPLE call their input N. Suppose we evaluate the
+expression (QUADRUPLE 5) as in the diagram on the next page. When we enter
+QUADRUPLE, Lisp creates a new variable N with value 5 and evaluates the
+expression (DOUBLE (DOUBLE N)). What happens when we call DOUBLE with input 5?
+DOUBLE creates its own variable N, bound to its own input, which is 5. The body
+of DOUBLE evaluates to 10. Now we have evaluated (DOUBLE N), so we can use that
+result to evaluate (DOUBLE (DOUBLE N)). DOUBLE is called again, this time with
+input 10, so it creates yet another variable named N, binds it to 10, and
+evaluates (* N 2). After DOUBLE returns 20, QUADRUPLE returns 20 as its result,
+and we end up back at top level again, where the name N refers to the global
+variable N, still with no value assigned.
+
+** SUMMARY
+
+#+CINDEX:eval notation
+#+CINDEX:expressions represented as lists
+#+CINDEX:lists, expressions
+In this chapter we learned EVAL notation, which allows expressions to be
+represented as lists. Lists are interpreted by the EVAL function according to a
+built-in set of evaluation rules. The evaluation rules we learned were:
+
+#+CINDEX:evaluation rules
+#+CINDEX:self-evaluating, numbers, t, nil
+#+CINDEX:numbers, self-evaluating
+- Numbers are self-evaluating, meaning they evaluate to themselves. So do T and
+  NIL.
+
+#+CINDEX:list, evaluation rules
+- When evaluating a list, the first element specifies a function to call, and
+  the remaining elements specify its arguments. The arguments are evaluated
+  from left to right to derive the inputs that are passed to the function.
+
+#+CINDEX:symbols, evaluation rules, variable references
+#+CINDEX:variable references, symbols
+#+CINDEX:unassigned variables error
+#+CINDEX:error, unassigned variable
+- Symbols appearing anywhere other than the first element of a list are
+  interpreted as variable references. A symbol evaluates to the value of the
+  variable it names. Exactly which variable a symbol is referring to depends on
+  the context in which the symbol appears. Variables that haven’t been assigned
+  values cause ``unassigned variable'' errors when the symbol is evaluated.
+
+#+CINDEX:quoted list, evaluation rule
+- A quoted list or symbol evaluates to itself, without the quote.
+
+
+A list of form:
+: (DEFUN function-name (argument-list) function-body)
+defines a function. DEFUN is a special kind of function; its inputs do not have
+to be quoted. A function’s argument list is a list of symbols giving names to
+the function’s inputs. Inside the body of the function, the variables that hold
+Ithe function’s inputs can be referred to by these symbols.
+
+*** FUNCTIONS COVERED IN THIS CHAPTER
+
+#+CINDEX:evaluator, eval
+#+CINDEX:eval, evaluator
+- The evaluator: EVAL.
+
+#+CINDEX:macro function
+#+CINDEX:defun, macro function
+- Macro function for defining new functions: DEFUN.
+
+** Lisp on the Computer
+
+#+CINDEX:lisp on a computer
+Congratulations! Having made it successfully through all the pencil-and-paper
+work, it’s time for you to learn how to use Lisp on a real computer.
+
+*** RUNNING LISP
+The first thing you need to find out is how to start up Lisp on your computer.
+
+When Lisp starts up it prints a greeting message. Each implementation has its
+own style of greeting, but a typical message looks something like this:
+
+#+BEGIN_EXAMPLE
+CMU Common Lisp M2.8 (29-Mar-89)
+Hemlock M3.0 (29-Mar-89), Compiler M1.7 (29-Mar-89)
+Send bug reports and questions to Gripe.
+>
+#+END_EXAMPLE
+
+The =>= character that appears after the greeting is called a *top-level
+prompt*.  It indicates that Lisp is waiting for you to type something. Some
+Lisps use a different prompt character; many use =*= (an asterisk).
+
+The next thing you need to find out is which control characters your Lisp uses,
+specifically:
+
+- How do you delete a character: by pressing {{{key(Delete)}}},
+  {{{key(Backspace)}}}, or some other key?
+
+- How do you throw away a line of input so you can start over? In some Lisps
+  you can discard a line before hitting {{{key(Return)}}} by typing a
+  {{{kbd(C-u)}}}.  (While holding down the {{{key(Control)}}} key, press the
+  {{{kbd(u)}}} key.)  Other Lisps use a different character.
+
+- What is the =abort= character that gets you back to the top-level prompt?
+  Many Lisps use {{{kbd(C-g)}}} or {{{kbd(C-c)}}} for this purpose.
+
+
+While we’re on the subject of special characters, remember that computers
+always provide separate keys for the letter {{{kbd(O)}}} and the digit
+{{{kbd(0)}}}, and for the letter {{{kbd(l)}}} and the digit {{{kbd(1)}}}.  On
+conventional typewriters it’s fine to type {{{kbd(O)}}} for {{{kbd(0)}}} or
+{{{kbd(l)}}} for {{{kbd(1)}}}, but when you talk to a computer you must be sure
+to use the correct character for what you mean.
+
+Finally, you need to find out how to get out of Lisp when you’re done. Most
+Lisps require you to type something like ~(QUIT)~ or ~(EXIT)~ to
+leave. Sometimes an end-of-file character like {{{key(Control-D)}}} will also
+work.
+
+*** THE READ-EVAL-PRINT LOOP
+
+#+CINDEX:read-eval-print loop
+A computer running Lisp behaves a lot like a pocket calculator.  It reads an
+expression that you type on the keyboard, evaluates it (using EVAL), and prints
+the result on the screen.  Then it prints another prompt and waits for you to
+type the next expression.  This process is called a {{{dfn(read-eval-print
+loop)}}}.
+
+*** TODO RECOVERING FROM ERRORS
+
+#+CINDEX:error, recover from
+A very important thing to learn at this point is how to recover from errors.
+
+{{{heading(Typing Errors)}}}
+
+#+CINDEX:error, typing
+#+CINDEX:@key{C-g}
+First let’s consider typing errors.  If after entering a long expression I
+realize I’ve made a typing error near the beginning, I may want to throw away
+the entire expression and start over. In my Lisp, the way to do that is to type
+{{{kbd(Control-G)}}} to get back to the top-level prompt.
+
+{{{heading(Evaluation Errors)}}}
+
+#+CINDEX:error, evaluation
+#+CINDEX:read-eval-print loop for debugger
+A more common problem is an expression that is typed correctly but results in
+an evaluation error.  Trying to add a number and a symbol is an example.  When
+an evaluation error occurs, Lisp prints an error message and puts you in a
+different kind of input loop.  Instead of talking to the top-level
+read-eval-print loop, you are now talking to the *debugger’s* read-eval-print
+loop.  We’ll learn how to use the debugger in Chapter 8.
+
+#+CINDEX:abort character, @kbd{C-g}
+For now, all you need to know is how to get out of the debugger and back to top
+level. In my Lisp, {{{kbd(Control-G)}}} is the abort character that gets me out
+of the debugger and back to top level.
+
+#+CINDEX:function, redefine
+If you define a function in Lisp and it doesn’t work, you can redefine it and
+try again. You can redefine a function as often as you like; only the last
+definition is retained.
+
+** Lisp Toolkit---ED
+
+#+CINDEX:Lisp Toolkit
+#+CINDEX:tools, Lisp Toolkit
+The Lisp Toolkit sections appearing in this and subsequent chapters will
+introduce you to the important tools of the Lisp programming environment. Some
+of these tools, such as language-specific editors, program formatters, and
+source-level debuggers, are available today for other languages, but they first
+appeared in Lisp.
+
+#+CINDEX:SDRAW
+#+CINDEX:DTRACE
+Other tools remain unique to Lisp, and two of them are unique to this book:
+- SDRAW
+- DTRACE
+
+The source listings for both appear in an appendix.
+
+#+CINDEX:ED
+#+CINDEX:Lisp editor, ed
+The tool we will cover first is the Lisp editor. The Common Lisp standard does
+not specify what sort of editor should be provided with a Lisp implementation,
+so I can’t tell you exactly how your editor works. But I can tell you something
+about Lisp editors in general, why they’re different from ordinary text
+editors, and why you ought to take the time to learn to use whatever editor
+your Lisp provides.
+
+#+BEGIN_QUOTE
+The most frequently occurring errors in LISP are parenthetical errors. It is
+thus almost imperative to employ some sort of counting or pairing device to
+check parentheses every time that a function is changed.
+@@texinfo:@author Elaine Gord, ``Notes on the debugging of LISP programs,'' 1964.@@
+#+END_QUOTE
+
+The above quote was written 25 years ago, when Lisp programs were typed on
+punched cards. Today, of course, we use interactive editors. Lisp editors are
+not ordinary text editors: They ``understand'' the syntax of Lisp programs. On
+my machine, whenever I type a right parenthesis, the editor flashes the
+corresponding left parenthesis for me. This keeps me from making a
+``parenthetical error'' when entering Lisp expressions. Another one of my
+editor’s jobs is to automatically indent every line as I type it. If a function
+definition takes several lines, it will be indented in a neat and orderly
+format that is easy to read.
+
+There are two more things a good Lisp editor provides.
+
+1. One is an easy way to *evaluate expressions while editing*. You can position
+   the cursor (or mouse) on a function definition, hit a few keys, and that
+   function definition will be evaluated without ever leaving the editor.
+
+2. The second thing a good editor provides is *rapid access to online
+   documentation*. If I want to see the documentation for any Lisp function or
+   variable, I can call it up with just a few keystrokes. The editor also
+   provides online documentation about itself.
+
+
+#+CINDEX:ED
+#+CINDEX:interface, Lisp implementation and editor
+The Common Lisp standard specifies the interface between a Lisp implementation
+and the editor it provides.  The interface is a function called ED.  Typing
+{{{kbd((ED))}}} when at the top-level read-eval-print loop causes you to enter
+the editor, but many Lisps also provide faster ways, such as by typing a
+character like {{{kbd(Control-E)}}}.
+
+** Advanced Topics
+
+*** FUNCTIONS OF NO ARGUMENTS
+
+*** THE QUOTE SPECIAL FUNCTION
+
+*** INTERNAL STRUCTURE OF SYMBOLS
+
+*** LAMBDA NOTATION
+
+*** SCOPE OF VARIABLES
+
+*** EVAL AND APPLY
 * List of Tables
   :PROPERTIES:
   :UNNUMBERED: t
@@ -1799,22 +2052,23 @@ function error:
 #+TEXINFO_DIR_DESC:Gentle introduction to symbolic computation
 #+TEXINFO_PRINTED_TITLE:Common Lisp
 * MACRO DEFINITIONS                                                :noexport:
-  #+MACRO: subtitle A Gentle Introduction to Symbolic Computation
-  #+MACRO: VERSION Version 0.0.7 <2019-02-20 Wed 20:01>
-  #+MACRO: noindent @@texinfo:@noindent @@
-  #+MACRO: break @@texinfo:@*@@
-  #+MACRO: heading @@texinfo:@heading @@ $1
-  #+MACRO: subheading @@texinfo:@subheading @@ $1
-  #+MACRO: dfn @@texinfo:@dfn{@@$1@@texinfo:}@@
-  #+MACRO: code @@texinfo:@code{@@$1@@texinfo:}@@
-  #+MACRO: result @@texinfo:@result{}@@
-* FOOTNOTES                                                        :noexport:
+#+MACRO: subtitle A Gentle Introduction to Symbolic Computation
+#+MACRO: VERSION Version 0.6.8 <2019-02-27 Wed 19:20>
+#+MACRO: noindent @@texinfo:@noindent @@
+#+MACRO: break @@texinfo:@*@@
+#+MACRO: heading @@texinfo:@heading @@ $1
+#+MACRO: subheading @@texinfo:@subheading @@ $1
+#+MACRO: dfn @@texinfo:@dfn{@@$1@@texinfo:}@@
+#+MACRO: code @@texinfo:@code{@@$1@@texinfo:}@@
+#+MACRO: result @@texinfo:@result{}@@
+#+MACRO: kbd @@texinfo:@kbd{@@$1@@texinfo:}@@
+#+MACRO: key @@texinfo:@key{@@$1@@texinfo:}@@
+* Footnotes
+
 [fn:add1]Note to instructors: Common Lisp contains built-in functions 1+ and 1-
 that add 1 to or subtract 1 from their input, respectively. But since these
 unusual names are almost certain to confuse beginning programmers, I will not
 refer to them in this book.
-
-* Footnotes
 
 [fn:2] DEFUN stands for define function.
 
