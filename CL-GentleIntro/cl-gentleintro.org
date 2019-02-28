@@ -2004,15 +2004,210 @@ character like {{{kbd(Control-E)}}}.
 
 *** FUNCTIONS OF NO ARGUMENTS
 
+#+CINDEX:empty list
+#+CINDEX:nil, empty list
+#+CINDEX:empty argument list
+Suppose we wanted to write a function that multiplies 85 by 97. Notice that
+this function requires no inputs; it does its computation using only
+prespecified constants. Since the function doesn’t take any inputs, when we
+write its definition, it will have an empty argument list. The empty list, of
+course, is NIL. Let’s define this function under the name TEST:
+: (defun test () (* 85 97))
+After doing this, we see that
+:(test) ⇒ 8245
+: (test 1) ⇒ Error! Too many arguments.
+: test ⇒ Error! TEST unbound variable.
+
 *** THE QUOTE SPECIAL FUNCTION
+
+#+CINDEX:quote
+#+CINDEX:special function
+QUOTE is a special function: Its input does not get evaluated. The QUOTE
+special function simply returns its input. For example:
+: (quote foo) ⇒ foo
+: (quote (hello world)) ⇒ (hello world)
+
+Early versions of Lisp used QUOTE instead of an apostrophe to indicate that
+something shouldn’t be evaluated. That is, where we would write:
+: (cons ’up ’(down sideways))
+old-style Lisp programmers would write
+: (cons (quote up) (quote (down sideways)))
+
+#+CINDEX:apostrophe
+Modern Lisp systems use the apostrophe as shorthand for QUOTE. Internally,
+however, they convert the apostrophe to QUOTE.
+: (first ''foo) => QUOTE
+: (length ''foo) => 2
 
 *** INTERNAL STRUCTURE OF SYMBOLS
 
+#+CINDEX:symbols
+#+CINDEX:composite objects, symbols
+So far in this book we have been drawing symbols by writing their names. But
+symbols in Common Lisp are actually {{{dfn(composite)}}} objects, meaning they
+have several parts to them. Conceptually, a {{{dfn(symbol)}}} is /a block of
+five pointers/, one of which points to the representation of the symbol’s
+name. The others will be defined later. The internal structure of the symbol
+FRED looks like this:
+
+#+BEGIN_EXAMPLE
+|__________________
+| name        •-----> "FRED"
+|__________________
+|__________________
+|__________________
+|__________________
+|__________________
+#+END_EXAMPLE
+
+#+CINDEX:string
+The ``FRED'' appearing above in quotation marks is called a
+string. {{{dfn(Strings)}}} are sequences of characters; they will be covered
+more fully in Chapter 9. For now it suffices to note that strings are used to
+store the names of symbols; a symbol and its name are actually two different
+things.
+
+Some symbols, like CONS or {{{command(+)}}}, are used to name built-in Lisp
+functions. The symbol CONS has a pointer in its function cell to a ‘‘compiled
+code object’’ that represents the machine language instructions for creating
+new cons cells.
+
+#+BEGIN_EXAMPLE
+|__________________
+| name        •-----> "CONS"
+|__________________
+|__________________
+| function    •-----> compiled CONS function
+|__________________
+|__________________
+|__________________
+#+END_EXAMPLE
+
+#+CINDEX:symbol-name
+#+CINDEX:symbol-function
+We can extract the various components of a symbol using built-in Common Lisp
+functions like SYMBOL-NAME and SYMBOL-FUNCTION.  The following dialog
+illustrates this; you’ll see something slightly different if you try it on your
+computer, but the basic idea is the same.
+
+#+BEGIN_EXAMPLE
+> (symbol-name ’equal)
+  "EQUAL"
+> (symbol-function ’equal)
+  #<Compiled EQUAL function {60463B0}>
+#+END_EXAMPLE
+
 *** LAMBDA NOTATION
+
+#+CINDEX:Church, Alonzo
+#+CINDEX:lambda notation
+Lambda notation was created by Alonzo Church, a mathematician at Princeton
+University. Church wanted a clear, unambiguous way to describe functions, their
+inputs, and the computations they perform. In lambda notation, a function that
+adds 3 to a number would be written as shown below; the λ is the Greek letter
+lambda: ~λx.(3+x)~.
+
+#+CINDEX:McCarthy, John
+John McCarthy, the originator of Lisp, was a student of Church. He adopted
+Church’s notation for specifying functions. The Lisp equivalent of the unnamed
+function λx.(3+x) is the list:
+: (lambda (x) (+ 3 x))
+
+A function ~f(x,y) = 3x+y2~ would be written ~λ(x,y).(3x+y2)~ in lambda
+notation. In Lisp it is written:
+: (lambda (x y) (+ (* 3 x) (* y y)))
+
+#+CINDEX:lambda marker
+#+CINDEX:eval, lambda marker
+#+CINDEX:defun
+As you can see, the syntax of lambda expressions in Lisp is similar to that of
+Church’s notation, and even more similar to DEFUN. But unlike DEFUN, LAMBDA is
+not a function; it is a marker treated specially by EVAL. We’ll learn more
+about lambda expressions in chapter 7.
+
+#+CINDEX:associate names with functions
+DEFUN’s job is to associate names with functions. When typing in a new function
+definition, such as for =HALF=, there are two kinds of naming going on. The
+string ``HALF'' names the symbol, and the symbol =HALF= names the function.
+
+In the diagram below, you can see the name cell of =HALF= pointing to the
+string ``HALF''. Its function cell points to a function object that is the real
+function. Exactly what this function object looks like depends on which
+implementation of Common Lisp you’re using, but as the diagram indicates,
+there’s probably a lambda expression in there somewhere.
+
+#+BEGIN_EXAMPLE
+|__________________
+| name        •-----> "HALF"
+|__________________
+|__________________
+| function    •-----> function object •-----> LAMBDA (N) (/ N 2))
+|__________________
+|__________________
+|__________________
+#+END_EXAMPLE
+
+Of course, the lambda expression is just a list constructed out of cons
+cells. And each of the symbols in the lambda expression, such as =N= and =/=,
+is really a block of five pointers. Since the symbol =/= names the division
+function, it contains a pointer to a built-in function object for performing
+division. So, indirectly, HALF points to the built-in division function.
 
 *** SCOPE OF VARIABLES
 
+#+CINDEX:scope of variable
+#+CINDEX:local variable
+#+CINDEX:global variable
+The {{{dfn(scope)}}} of a variable is /the region in which it may be
+referenced/.  For example, the variable N that holds the input to HALF has
+scope limited to the body of HALF. Another way to express this is to say that
+the variable N is *local* to HALF.  *Global* variables have unbounded scope;
+they may be referenced anywhere.
+
+#+CINDEX:evaltrace diagram
+In an evaltrace diagram, the scope of a local variable is delimited by the
+thick arrow containing the creation of that variable.  Outside the thick arrow
+the variable cannot be referenced.
+
 *** EVAL AND APPLY
+
+#+CINDEX:eval
+EVAL is a Lisp primitive function. Each use of EVAL gives one level of
+evaluation.
+: (eval ’(+ 2 2)) ⇒ 4
+
+We won’t use EVAL explicitly in any of the programs we write, but we make
+implicit use of it all the time. You can think of the computer as a physical
+manifestation of EVAL. When it runs Lisp, everything you type is evaluated.
+
+#+CINDEX:apply, primitive function
+#+CINDEX:@kbd{#'}, quote function
+#+CINDEX:quote function, @kbd{#'}
+APPLY is also a Lisp primitive function.  APPLY takes a function and a list of
+objects as input.  It invokes the specified function with those objects as its
+inputs.  The first argument to APPLY should be quoted with =#'= rather than an
+ordinary quote; =#'= is the proper way to quote functions supplied as inputs to
+other functions.  This will be explained in more detail in Chapter 7.
+: (apply #’+ ’(2 3)) ⇒ 5
+: (apply #’equal ’(12 17)) ⇒ nil
+
+The objects APPLY passes to the function are not evaluated first. In the
+following example, the objects are a symbol and a list. Evaluating either the
+symbol =AS= or the list =(YOU LIKE IT)= would cause an error.
+: (apply #’cons ’(as (you like it))) ⇒ (as you like it)
+
+EVAL and APPLY are related to each other. A popular exercise in more advanced
+Lisp texts involves writing each function in terms of the other.
+
+*** FUNCTIONS COVERED IN ADVANCED TOPICS
+
+#+CINDEX:apply
+#+CINDEX:eval
+#+CINDEX:quote
+- EVAL-related function: APPLY.
+- EVAL (used explicitly).
+- Special function: QUOTE.
+
 * List of Tables
   :PROPERTIES:
   :UNNUMBERED: t
@@ -2053,13 +2248,14 @@ character like {{{kbd(Control-E)}}}.
 #+TEXINFO_PRINTED_TITLE:Common Lisp
 * MACRO DEFINITIONS                                                :noexport:
 #+MACRO: subtitle A Gentle Introduction to Symbolic Computation
-#+MACRO: VERSION Version 0.6.8 <2019-02-27 Wed 19:20>
+#+MACRO: VERSION Version 0.6.9 <2019-02-27 Wed 20:15>
 #+MACRO: noindent @@texinfo:@noindent @@
 #+MACRO: break @@texinfo:@*@@
 #+MACRO: heading @@texinfo:@heading @@ $1
 #+MACRO: subheading @@texinfo:@subheading @@ $1
 #+MACRO: dfn @@texinfo:@dfn{@@$1@@texinfo:}@@
 #+MACRO: code @@texinfo:@code{@@$1@@texinfo:}@@
+#+MACRO: command @@texinfo:@command{@@$1@@texinfo:}@@
 #+MACRO: result @@texinfo:@result{}@@
 #+MACRO: kbd @@texinfo:@kbd{@@$1@@texinfo:}@@
 #+MACRO: key @@texinfo:@key{@@$1@@texinfo:}@@
